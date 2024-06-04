@@ -1,0 +1,44 @@
+package itacademy.misbackend.mapper.impl;
+
+import itacademy.misbackend.dto.AppointmentDto;
+import itacademy.misbackend.entity.Appointment;
+import itacademy.misbackend.mapper.AppointmentMapper;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class AppointmentMapperImpl implements AppointmentMapper {
+    @Override
+    public AppointmentDto toDto(Appointment appointment) {
+        return AppointmentDto.builder()
+                .id(appointment.getId())
+                .reason(appointment.getReason())
+                .status(appointment.getStatus())
+                .doctorId(appointment.getDoctor().getId())
+                .patientId(appointment.getPatient().getId())
+                .appointmentDate(appointment.getAppointmentDate())
+                .notes(appointment.getNotes())
+                .build();
+    }
+
+    @Override
+    public Appointment toEntity(AppointmentDto appointmentDto) {
+        return Appointment.builder()
+                .reason(appointmentDto.getReason())
+                .status(appointmentDto.getStatus())
+                .appointmentDate(appointmentDto.getAppointmentDate())
+                .notes(appointmentDto.getNotes())
+                .build();
+    }
+
+    @Override
+    public List<AppointmentDto> toDtoList(List<Appointment> appointment) {
+        var dtos = new ArrayList<AppointmentDto>();
+        for (Appointment a : appointment) {
+            dtos.add(toDto(a));
+        }
+        return dtos;
+    }
+}
