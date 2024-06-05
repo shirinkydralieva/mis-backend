@@ -17,7 +17,9 @@ public class DoctorMapperImpl implements DoctorMapper {
     public DoctorDto toDto(Doctor doctor) {
         DoctorDto dto = DoctorDto.builder()
                 .id(doctor.getId())
-                .fullName(doctor.getFullName())
+                .firstName(doctor.getFirstName())
+                .lastName(doctor.getLastName())
+                .patronymic(doctor.getPatronymic())
                 .phoneNumber(doctor.getPhoneNumber())
                 .specialization(doctor.getSpecialization())
                 .qualification(doctor.getQualification())
@@ -37,7 +39,9 @@ public class DoctorMapperImpl implements DoctorMapper {
     @Override
     public Doctor toEntity(DoctorDto doctorDto) {
         Doctor doctor = Doctor.builder()
-                .fullName(doctorDto.getFullName())
+                .firstName(doctorDto.getFirstName())
+                .lastName(doctorDto.getLastName())
+                .patronymic(doctorDto.getPatronymic())
                 .phoneNumber(doctorDto.getPhoneNumber())
                 .specialization(doctorDto.getSpecialization())
                 .qualification(doctorDto.getQualification())

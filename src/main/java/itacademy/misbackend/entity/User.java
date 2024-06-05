@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,9 +21,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
     @SequenceGenerator(name = "user_seq_generator", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String username;
     private String password;
-    @ManyToMany
-    private Set<Role> role;
-    //email, phoneNumber
+    @Column(unique = true, nullable = false)
+    private String email;
+    private String phoneNumber;
+    private boolean blocked;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
+    //private LocalDateTime lastAuthentication;
+
+    private LocalDateTime deletedAt;
+    private String deletedBy;
 }

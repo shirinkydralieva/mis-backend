@@ -13,7 +13,9 @@ import java.util.List;
 @Builder
 public class DoctorDto {
     private Long id;
-    private String fullName;
+    private String firstName;
+    private String lastName;
+    private String patronymic; //Отчество
     private String specialization;
     private String qualification;
     private Long departmentId;
