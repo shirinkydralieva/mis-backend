@@ -6,6 +6,7 @@ import itacademy.misbackend.entity.Doctor;
 import itacademy.misbackend.mapper.DoctorMapper;
 import itacademy.misbackend.repo.DepartmentRepo;
 import itacademy.misbackend.repo.DoctorRepo;
+import itacademy.misbackend.repo.UserRepo;
 import itacademy.misbackend.service.DoctorService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,13 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepo doctorRepo;
     private final DoctorMapper doctorMapper;
     private final DepartmentRepo departmentRepo;
+    private final UserRepo userRepo;
 
     @Override
     public DoctorDto create(DoctorDto dto) {
         Doctor doctor = doctorMapper.toEntity(dto);
         doctor.setDepartment(departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getDepartmentId()));
-        //doctor.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId())); //!
+        doctor.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId())); //!
         doctor = doctorRepo.save(doctor);
         return doctorMapper.toDto(doctor);
     }

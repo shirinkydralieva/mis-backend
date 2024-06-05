@@ -10,6 +10,7 @@ import itacademy.misbackend.mapper.PatientMapper;
 import itacademy.misbackend.repo.AddressRepo;
 import itacademy.misbackend.repo.PassportRepo;
 import itacademy.misbackend.repo.PatientRepo;
+import itacademy.misbackend.repo.UserRepo;
 import itacademy.misbackend.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class PatientServiceImpl implements PatientService {
     private final PassportRepo passportRepo;
     private final AddressMapper addressMapper;
     private final PassportMapper passportMapper;
+    private final UserRepo userRepo;
 
     @Override
     public PatientDto create(PatientDto patientDto) {
@@ -36,6 +38,9 @@ public class PatientServiceImpl implements PatientService {
         if (patientDto.getPassport() != null) {
             passportRepo.save(patient.getPassport());
         }
+        patient.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()));
+        patient = patientRepo.save(patient);
+
         return patientMapper.toDto(patient);
     }
 

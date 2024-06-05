@@ -41,4 +41,11 @@ public class Appointment {
 
     private LocalDateTime deletedAt;
     private String deletedBy;
+
+    @Override
+    public String toString() {
+        return "Appointment [id=" + id
+                + ", doctorId="
+                + doctor.getId() + "]";
+    }
 }
