@@ -26,6 +26,7 @@ public class User {
     private String password;
     @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true, nullable = false)
     private String phoneNumber;
     private boolean blocked;
     @ManyToMany(fetch = FetchType.EAGER)

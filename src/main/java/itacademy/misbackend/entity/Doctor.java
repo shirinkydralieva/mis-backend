@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -39,4 +40,11 @@ public class Doctor {
 
     private LocalDateTime deletedAt;
     private String deletedBy;
+
+    @Override
+    public String toString() {
+        return "Doctor [id=" + id
+                + ", appointments=" + appointments.stream().map(Appointment::getId).toList()
+                + "]";
+    }
 }

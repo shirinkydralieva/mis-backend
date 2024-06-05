@@ -3,6 +3,7 @@ package itacademy.misbackend.controller;
 import itacademy.misbackend.dto.DepartmentDto;
 import itacademy.misbackend.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +19,10 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> create (@RequestBody DepartmentDto departmentDto) {
         DepartmentDto createdDepartment = departmentService.create(departmentDto);
         if (createdDepartment == null) {
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             //Временная мера, пока не реализована обработка ошибок
         }
-        return ResponseEntity.ok(createdDepartment);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping()
