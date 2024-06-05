@@ -45,4 +45,7 @@ public class Patient {
 
     private LocalDateTime deletedAt;
     private String deletedBy;
+
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+    private MedicalRecord medicalRecord;
 }

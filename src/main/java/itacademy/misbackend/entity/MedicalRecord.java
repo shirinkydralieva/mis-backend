@@ -18,9 +18,8 @@ public class MedicalRecord {
     @Id
     private Long id;
 
-    @MapsId
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL)
