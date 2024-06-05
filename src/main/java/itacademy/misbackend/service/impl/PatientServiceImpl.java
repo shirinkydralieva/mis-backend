@@ -57,8 +57,14 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto update(Long id, PatientDto patientDto) {
         Patient patient = patientRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
         if (patient != null){
-            if (patientDto.getFullName() != null){
-                patient.setFullName(patientDto.getFullName());
+            if (patientDto.getFirstName() != null){
+                patient.setFirstName(patientDto.getFirstName());
+            }
+            if (patientDto.getLastName() != null){
+                patient.setLastName(patientDto.getLastName());
+            }
+            if (patientDto.getPatronymic() != null){
+                patient.setPatronymic(patientDto.getPatronymic());
             }
             if (patientDto.getDateOfBirth() != null){
                 patient.setDateOfBirth(patientDto.getDateOfBirth());

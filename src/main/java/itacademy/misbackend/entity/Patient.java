@@ -24,7 +24,9 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_seq_generator")
     @SequenceGenerator(name = "patient_seq_generator", sequenceName = "patient_seq", allocationSize = 1)
     private Long id;
-    private String fullName;
+    private String firstName;
+    private String lastName;
+    private String patronymic; //Отчество
     private Gender gender;
     private LocalDate dateOfBirth;
     @OneToOne(fetch = FetchType.EAGER)

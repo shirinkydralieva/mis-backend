@@ -44,8 +44,14 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorDto update(Long id, DoctorDto updateDto) {
         Doctor doctor = doctorRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
         if (doctor != null) {
-            if (updateDto.getFullName() != null) {
-                doctor.setFullName(updateDto.getFullName());
+            if (updateDto.getFirstName() != null) {
+                doctor.setFirstName(updateDto.getFirstName());
+            }
+            if (updateDto.getLastName() != null) {
+                doctor.setLastName(updateDto.getLastName());
+            }
+            if (updateDto.getPatronymic() != null) {
+                doctor.setPatronymic(updateDto.getPatronymic());
             }
             if (updateDto.getSpecialization() != null) {
                 doctor.setSpecialization(updateDto.getSpecialization());
