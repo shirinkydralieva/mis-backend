@@ -49,7 +49,6 @@ public class PatientMapperImpl implements PatientMapper {
                 .taxId(patientDto.getTaxId())
                 .phoneNumber(patientDto.getPhoneNumber())
                 .placeOfWork(patientDto.getPlaceOfWork())
-                .user(null) //!
                 .build();
         if (patientDto.getAddress() != null) {
             patient.setAddress(addressMapper.toEntity(patientDto.getAddress()));
