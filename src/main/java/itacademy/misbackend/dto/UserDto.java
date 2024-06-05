@@ -1,6 +1,6 @@
 package itacademy.misbackend.dto;
 
-import itacademy.misbackend.entity.Role;
+import itacademy.misbackend.entity.helper.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

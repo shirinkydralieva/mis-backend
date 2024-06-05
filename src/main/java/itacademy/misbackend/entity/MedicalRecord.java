@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,16 +18,13 @@ public class MedicalRecord {
     @Id
     private Long id;
 
-   /*
     @MapsId
     @OneToOne
     @JoinColumn(name = "id")
     private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_id")
-    private Appointment appointment;
-    */
+    @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL)
+    private List<Appointment> appointments;
 
     private String summary;
     private String notes;

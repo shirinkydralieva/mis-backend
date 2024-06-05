@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Entity
+@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +19,6 @@ public class Prescription {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prescription_seq_generator")
     @SequenceGenerator(name = "prescription_seq_generator", sequenceName = "prescription_seq", allocationSize = 1)
     private Long id;
-
-  /*  @ManyToOne
-    @JoinColumn(name = "medicalRecord_id")
-    private MedicalRecord medicalRecord;*/
 
     private String medication;
     private String dosage;

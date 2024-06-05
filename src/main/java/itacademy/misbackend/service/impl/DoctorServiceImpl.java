@@ -1,7 +1,7 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.DoctorDto;
-import itacademy.misbackend.entity.Department;
+import itacademy.misbackend.entity.helper.Department;
 import itacademy.misbackend.entity.Doctor;
 import itacademy.misbackend.mapper.DoctorMapper;
 import itacademy.misbackend.repo.DepartmentRepo;

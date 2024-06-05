@@ -1,6 +1,6 @@
 package itacademy.misbackend.repo;
 
-import itacademy.misbackend.entity.Passport;
+import itacademy.misbackend.entity.helper.Passport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

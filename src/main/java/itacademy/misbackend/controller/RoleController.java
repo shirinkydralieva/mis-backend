@@ -1,6 +1,6 @@
 package itacademy.misbackend.controller;
 
-import itacademy.misbackend.entity.Role;
+import itacademy.misbackend.entity.helper.Role;
 import itacademy.misbackend.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

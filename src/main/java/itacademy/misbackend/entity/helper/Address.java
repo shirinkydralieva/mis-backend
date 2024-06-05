@@ -1,8 +1,7 @@
-package itacademy.misbackend.entity;
+package itacademy.misbackend.entity.helper;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

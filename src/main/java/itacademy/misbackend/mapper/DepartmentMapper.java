@@ -1,7 +1,7 @@
 package itacademy.misbackend.mapper;
 
 import itacademy.misbackend.dto.DepartmentDto;
-import itacademy.misbackend.entity.Department;
+import itacademy.misbackend.entity.helper.Department;
 
 import java.util.List;
 

@@ -24,6 +24,9 @@ public class Appointment {
     private String notes;
     private LocalDateTime appointmentDate;
 
+  //  private Diagnosis diagnosis;
+   // private Prescription prescription;
+
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;

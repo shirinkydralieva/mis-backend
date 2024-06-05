@@ -2,6 +2,7 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.MedicalRecordDto;
 import itacademy.misbackend.entity.MedicalRecord;
+import itacademy.misbackend.mapper.AppointmentMapper;
 import itacademy.misbackend.repo.MedicalRecordRepo;
 import itacademy.misbackend.service.MedicalRecordService;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService {
       private MedicalRecordRepo repo;
+      private AppointmentMapper mapper;
     @Override
     public MedicalRecordDto create(MedicalRecordDto recordDto) {
      /*   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -21,8 +23,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         MedicalRecord record = MedicalRecord.builder()
                 .summary(recordDto.getSummary())
                 .notes(recordDto.getNotes())
-             //   .patient
-             //   .appointment
+              //  .appointments()
                 .createdAt(new Timestamp(System.currentTimeMillis()))
              //   .createdBy(username)
                 .lastUpdatedAt(new Timestamp(System.currentTimeMillis()))
@@ -47,8 +48,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                 .id(record.getId())
                 .summary(record.getSummary())
                 .notes(record.getNotes())
-                //   .patient
-                //   .appointment
+                .appointments(mapper.toDtoList(record.getAppointments()))
                 .createdAt(record.getCreatedAt())
                 .createdBy(record.getCreatedBy())
                 .lastUpdatedAt(record.getLastUpdatedAt())
@@ -68,8 +68,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                     .id(record.getId())
                     .summary(record.getSummary())
                     .notes(record.getNotes())
-                    //   .patient
-                    //   .appointment
+                    .appointments(mapper.toDtoList(record.getAppointments()))
                     .createdAt(record.getCreatedAt())
                     .createdBy(record.getCreatedBy())
                     .lastUpdatedAt(record.getLastUpdatedAt())

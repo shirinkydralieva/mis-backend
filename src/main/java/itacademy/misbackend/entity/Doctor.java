@@ -1,5 +1,6 @@
 package itacademy.misbackend.entity;
 
+import itacademy.misbackend.entity.helper.Department;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package itacademy.misbackend.service.impl;
 
-import itacademy.misbackend.entity.Role;
+import itacademy.misbackend.entity.helper.Role;
 import itacademy.misbackend.repo.RoleRepo;
 import itacademy.misbackend.service.RoleService;
 import lombok.RequiredArgsConstructor;

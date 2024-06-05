@@ -1,8 +1,8 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.PatientDto;
-import itacademy.misbackend.entity.Address;
-import itacademy.misbackend.entity.Passport;
+import itacademy.misbackend.entity.helper.Address;
+import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.entity.Patient;
 import itacademy.misbackend.mapper.AddressMapper;
 import itacademy.misbackend.mapper.PassportMapper;

@@ -1,7 +1,7 @@
 package itacademy.misbackend.mapper.impl;
 
 import itacademy.misbackend.dto.DepartmentDto;
-import itacademy.misbackend.entity.Department;
+import itacademy.misbackend.entity.helper.Department;
 import itacademy.misbackend.mapper.DepartmentMapper;
 import org.springframework.stereotype.Component;
 

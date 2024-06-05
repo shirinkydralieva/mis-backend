@@ -1,5 +1,7 @@
 package itacademy.misbackend.entity;
 
+import itacademy.misbackend.entity.helper.Address;
+import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

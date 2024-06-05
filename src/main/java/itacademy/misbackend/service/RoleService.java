@@ -1,6 +1,6 @@
 package itacademy.misbackend.service;
 
-import itacademy.misbackend.entity.Role;
+import itacademy.misbackend.entity.helper.Role;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
