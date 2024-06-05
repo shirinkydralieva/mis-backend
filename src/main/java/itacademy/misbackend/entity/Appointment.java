@@ -36,7 +36,7 @@ public class Appointment {
     private Patient patient;
 
     @ManyToOne
-    @JoinColumn(name = "medical_record_id", nullable = false)
+    @JoinColumn(name = "medical_record_id")
     private MedicalRecord medicalRecord;
 
     private LocalDateTime deletedAt;

@@ -1,16 +1,14 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.PatientDto;
+import itacademy.misbackend.entity.MedicalRecord;
 import itacademy.misbackend.entity.helper.Address;
 import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.entity.Patient;
 import itacademy.misbackend.mapper.AddressMapper;
 import itacademy.misbackend.mapper.PassportMapper;
 import itacademy.misbackend.mapper.PatientMapper;
-import itacademy.misbackend.repo.AddressRepo;
-import itacademy.misbackend.repo.PassportRepo;
-import itacademy.misbackend.repo.PatientRepo;
-import itacademy.misbackend.repo.UserRepo;
+import itacademy.misbackend.repo.*;
 import itacademy.misbackend.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,7 @@ public class PatientServiceImpl implements PatientService {
     private final AddressMapper addressMapper;
     private final PassportMapper passportMapper;
     private final UserRepo userRepo;
+    private final MedicalRecordRepo recordRepo;
 
     @Override
     public PatientDto create(PatientDto patientDto) {
@@ -40,6 +39,11 @@ public class PatientServiceImpl implements PatientService {
         }
         patient.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()));
         patient = patientRepo.save(patient);
+
+        MedicalRecord medicalRecord = new MedicalRecord();
+        medicalRecord.setId(patient.getId());
+        medicalRecord.setPatient(patient); // Связываем медицинскую карту с пациентом
+        recordRepo.save(medicalRecord);   // Сохраняем медицинскую карту
 
         return patientMapper.toDto(patient);
     }
