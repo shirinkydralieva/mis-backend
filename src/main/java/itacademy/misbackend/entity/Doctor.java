@@ -20,7 +20,9 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctor_seq_generator")
     @SequenceGenerator(name = "doctor_seq_generator", sequenceName = "doctor_seq", allocationSize = 1)
     private Long id;
-    private String fullName; //фио
+    private String firstName;
+    private String lastName;
+    private String patronymic; //Отчество
     private String specialization; //специальность врача
     private String qualification;
     @ManyToOne

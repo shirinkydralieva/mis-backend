@@ -20,7 +20,9 @@ public class PatientMapperImpl implements PatientMapper {
     public PatientDto toDto(Patient patient) {
         PatientDto dto = PatientDto.builder()
                 .id(patient.getId())
-                .fullName(patient.getFullName())
+                .firstName(patient.getFirstName())
+                .lastName(patient.getLastName())
+                .patronymic(patient.getPatronymic())
                 .dateOfBirth(patient.getDateOfBirth())
                 .gender(patient.getGender())
                 .passport(passportMapper.toDto(patient.getPassport()))
@@ -39,7 +41,9 @@ public class PatientMapperImpl implements PatientMapper {
     @Override
     public Patient toEntity(PatientDto patientDto) {
         Patient patient = Patient.builder()
-                .fullName(patientDto.getFullName())
+                .firstName(patientDto.getFirstName())
+                .lastName(patientDto.getLastName())
+                .patronymic(patientDto.getPatronymic())
                 .dateOfBirth(patientDto.getDateOfBirth())
                 .gender(patientDto.getGender())
                 .taxId(patientDto.getTaxId())

@@ -15,7 +15,9 @@ import java.util.List;
 @Builder
 public class PatientDto {
     private Long id;
-    private String fullName;
+    private String firstName;
+    private String lastName;
+    private String patronymic; //Отчество
     private Gender gender;
     private LocalDate dateOfBirth;
     private PassportDto passport;

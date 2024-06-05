@@ -13,19 +13,19 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("api/roles/")
+@RequestMapping("/api/roles")
 public class RoleController {
 
     private final RoleService service;
 
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<Long> save(@RequestBody Role role) {
         return service.save(role);
     }
 
 
-    @GetMapping("/getAll")
+    @GetMapping()
     public ResponseEntity<List<Role>> getAll() {
         List<Role> roles = service.findAll();
         return new ResponseEntity<>(roles, HttpStatus.OK);
