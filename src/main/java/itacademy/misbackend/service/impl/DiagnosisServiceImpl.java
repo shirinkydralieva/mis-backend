@@ -1,7 +1,7 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.DiagnosisDto;
-import itacademy.misbackend.entity.Diagnosis;
+import itacademy.misbackend.entity.helper.Diagnosis;
 import itacademy.misbackend.repo.DiagnosisRepo;
 import itacademy.misbackend.service.DiagnosisService;
 import org.springframework.stereotype.Service;

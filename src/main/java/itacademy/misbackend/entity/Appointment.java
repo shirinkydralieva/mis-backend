@@ -21,11 +21,7 @@ public class Appointment {
     private Long id;
     private String reason;
     private String status;
-    private String notes;
     private LocalDateTime appointmentDate;
-
-  //  private Diagnosis diagnosis;
-   // private Prescription prescription;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
@@ -35,8 +31,7 @@ public class Appointment {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "medical_record_id")
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     private MedicalRecord medicalRecord;
 
     private LocalDateTime deletedAt;

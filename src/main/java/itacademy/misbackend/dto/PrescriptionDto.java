@@ -1,6 +1,5 @@
 package itacademy.misbackend.dto;
 
-import itacademy.misbackend.entity.MedicalRecord;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +13,7 @@ import java.sql.Timestamp;
 public class PrescriptionDto {
     private Long id;
 
-    private MedicalRecord medicalRecord;
-
+    private Long medicalRecordId;
     private String medication;
     private String dosage;
     private String instructions;

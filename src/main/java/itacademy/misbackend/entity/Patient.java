@@ -55,5 +55,6 @@ public class Patient {
     private String deletedBy;
 
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
-    private MedicalRecord medicalRecord;
+    private MedCard medCard;
+
 }
