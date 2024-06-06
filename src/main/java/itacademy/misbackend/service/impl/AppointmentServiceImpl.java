@@ -57,9 +57,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             if (appointmentDto.getReason() != null) {
                 appointment.setReason(appointmentDto.getReason());
             }
-            if (appointmentDto.getNotes() != null) {
-                appointment.setNotes(appointmentDto.getNotes());
-            }
             if (appointmentDto.getStatus() != null) {
                 appointment.setStatus(appointmentDto.getStatus());
             }

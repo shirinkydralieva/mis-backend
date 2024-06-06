@@ -1,6 +1,5 @@
 package itacademy.misbackend.dto;
 
-import itacademy.misbackend.entity.*;
 import itacademy.misbackend.entity.helper.Diagnosis;
 import itacademy.misbackend.entity.helper.Prescription;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import java.sql.Timestamp;
 public class MedicalRecordDto {
     private Long id;
 
-    private Long patientId;
     private Long appointmentId;
     private Long medCardId;
 
@@ -32,8 +30,5 @@ public class MedicalRecordDto {
 
     private String lastUpdatedBy;
     private Timestamp lastUpdatedAt;
-
-    private String deletedBy;
-    private Timestamp deletedAt;
 
 }

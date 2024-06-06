@@ -2,24 +2,44 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.MedicalRecordDto;
 import itacademy.misbackend.entity.MedicalRecord;
+import itacademy.misbackend.mapper.AppointmentMapper;
 import itacademy.misbackend.mapper.MedicalRecordMapper;
-import itacademy.misbackend.repo.MedicalRecordRepo;
+import itacademy.misbackend.repo.*;
+import itacademy.misbackend.service.AppointmentService;
+import itacademy.misbackend.service.MedCardService;
 import itacademy.misbackend.service.MedicalRecordService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MedicalRecordServiceImpl implements MedicalRecordService {
-      private MedicalRecordRepo repo;
-      private MedicalRecordMapper mapper;
+      private final MedicalRecordRepo repo;
+      private final MedicalRecordMapper mapper;
+      private final AppointmentRepo appointmentRepo;
+      private final MedCardRepo medCardRepo;
+      private final DiagnosisRepo diagnosisRepo;
+      private final PrescriptionRepo prescriptionRepo;
     @Override
     public MedicalRecordDto create(MedicalRecordDto recordDto) {
      //   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
      //   String username = authentication.getName();
 
         MedicalRecord record = mapper.toEntity(recordDto);
+        if (recordDto.getDiagnosis() != null) {
+            diagnosisRepo.save(record.getDiagnosis());
+        }
+        if (recordDto.getPrescription() != null) {
+            prescriptionRepo.save(record.getPrescription());
+        }
+
+        record.setAppointment(appointmentRepo
+                .findByDeletedAtIsNullAndDeletedByIsNullAndId(
+                        recordDto.getAppointmentId() ) );
+        record.setMedCard(medCardRepo.findByDeletedAtIsNullAndId(recordDto.getMedCardId()));
         record.setCreatedAt(new Timestamp(System.currentTimeMillis()));
     //    record.setCreatedBy(username);
         record.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));

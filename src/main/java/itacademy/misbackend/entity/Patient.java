@@ -1,5 +1,6 @@
 package itacademy.misbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import itacademy.misbackend.entity.helper.Address;
 import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.enums.Sex;
@@ -48,6 +49,7 @@ public class Patient {
     @OneToOne
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
 

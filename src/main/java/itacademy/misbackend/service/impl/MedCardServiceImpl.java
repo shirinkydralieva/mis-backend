@@ -5,15 +5,17 @@ import itacademy.misbackend.entity.MedCard;
 import itacademy.misbackend.mapper.MedicalRecordMapper;
 import itacademy.misbackend.repo.MedCardRepo;
 import itacademy.misbackend.service.MedCardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 @Service
+@RequiredArgsConstructor
 public class MedCardServiceImpl implements MedCardService {
-    private MedCardRepo repo;
-    private MedicalRecordMapper recordMapper;
+    private final MedCardRepo repo;
+    private final MedicalRecordMapper recordMapper;
 
     @Override
     public MedCardDto getById(Long id) {
@@ -22,6 +24,7 @@ public class MedCardServiceImpl implements MedCardService {
             throw new NullPointerException("Мед карта с id " + id + " не найдена!");
         }
          MedCardDto medCardDto = MedCardDto.builder()
+                 .id(medCard.getId())
                  .patient(medCard.getPatient())
                  .medicalRecords(recordMapper.toDtoList(medCard.getMedicalRecords()))
                  .lastUpdatedBy(medCard.getLastUpdatedBy())
@@ -39,6 +42,7 @@ public class MedCardServiceImpl implements MedCardService {
         List<MedCardDto> medCardDtoList = new ArrayList<>();
         for (MedCard medCard : medCardList) {
             MedCardDto medCardDto = MedCardDto.builder()
+                    .id(medCard.getId())
                     .patient(medCard.getPatient())
                     .medicalRecords(recordMapper.toDtoList(medCard.getMedicalRecords()))
                     .lastUpdatedBy(medCard.getLastUpdatedBy())
