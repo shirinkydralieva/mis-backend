@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Entity
+@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Diagnosis {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "diagnosis_seq_generator")
     @SequenceGenerator(name = "diagnosis_seq_generator", sequenceName = "diagnosis_seq", allocationSize = 1)

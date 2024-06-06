@@ -1,5 +1,6 @@
 package itacademy.misbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,11 +20,13 @@ public class MedCard {
     @Id
     private Long id;
 
+    @JsonIgnore
     @MapsId
     @OneToOne
     @JoinColumn(name = "id")
     private Patient patient;
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "medCard", cascade = CascadeType.ALL)
     private List<MedicalRecord> medicalRecords;
 

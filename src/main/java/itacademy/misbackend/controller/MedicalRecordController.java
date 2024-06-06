@@ -34,13 +34,13 @@ public class MedicalRecordController {
     @Operation(summary = "Этот роут для создание мед записей.")
     @PostMapping
     public ResponseEntity<MedicalRecordDto> create(@RequestBody MedicalRecordDto recordDto) {
-        try {
+      //  try {
             return new ResponseEntity<>(service.create(recordDto),HttpStatus.CREATED);
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    //    } catch (NullPointerException e) {
+     //       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+     //   } catch (Exception e) {
+     //       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 
     @ApiResponses(value = {
