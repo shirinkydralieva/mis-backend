@@ -1,5 +1,7 @@
 package itacademy.misbackend.entity;
 
+import itacademy.misbackend.entity.helper.Diagnosis;
+import itacademy.misbackend.entity.helper.Prescription;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +9,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
+@Table
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class MedicalRecord {
     @Id
@@ -22,11 +24,19 @@ public class MedicalRecord {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL)
-    private List<Appointment> appointments;
+    @OneToOne
+    @JoinColumn(name = "appointment_id", nullable = false)
+    private Appointment appointment;
 
-    private String summary;
+    @ManyToOne
+    @JoinColumn(name = "med_card_id", nullable = false)
+    private MedCard medCard;
+
+    private Diagnosis diagnosis;
+    private Prescription prescription;
+
     private String notes;
+    private String recommendation;
 
     private String createdBy;
     private Timestamp createdAt;

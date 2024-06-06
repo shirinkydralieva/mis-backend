@@ -1,7 +1,7 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.PatientDto;
-import itacademy.misbackend.entity.MedicalRecord;
+import itacademy.misbackend.entity.MedCard;
 import itacademy.misbackend.entity.helper.Address;
 import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.entity.Patient;
@@ -26,7 +26,7 @@ public class PatientServiceImpl implements PatientService {
     private final AddressMapper addressMapper;
     private final PassportMapper passportMapper;
     private final UserRepo userRepo;
-    private final MedicalRecordRepo recordRepo;
+    private final MedCardRepo medCardRepo;
 
     @Override
     public PatientDto create(PatientDto patientDto) {
@@ -40,10 +40,11 @@ public class PatientServiceImpl implements PatientService {
         patient.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()));
         patient = patientRepo.save(patient);
 
-        MedicalRecord medicalRecord = new MedicalRecord();
-        medicalRecord.setId(patient.getId());
-        medicalRecord.setPatient(patient); // Связываем медицинскую карту с пациентом
-        recordRepo.save(medicalRecord);   // Сохраняем медицинскую карту
+        MedCard medCard = new MedCard();
+        medCard.setPatient(patient); // Связываем медицинскую карту с пациентом
+        medCardRepo.save(medCard);   // Сохраняем медицинскую карту
+
+        patient.setMedCard(medCard);
 
         return patientMapper.toDto(patient);
     }

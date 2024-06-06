@@ -1,13 +1,14 @@
 package itacademy.misbackend.dto;
 
-import itacademy.misbackend.entity.Appointment;
+import itacademy.misbackend.entity.*;
+import itacademy.misbackend.entity.helper.Diagnosis;
+import itacademy.misbackend.entity.helper.Prescription;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,10 +17,15 @@ import java.util.List;
 public class MedicalRecordDto {
     private Long id;
 
-    private List<AppointmentDto> appointments;
+    private Long patientId;
+    private Long appointmentId;
+    private Long medCardId;
 
-    private String summary;
+    private Diagnosis diagnosis;
+    private Prescription prescription;
+
     private String notes;
+    private String recommendation;
 
     private String createdBy;
     private Timestamp createdAt;

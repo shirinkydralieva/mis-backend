@@ -2,40 +2,31 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.MedicalRecordDto;
 import itacademy.misbackend.entity.MedicalRecord;
-import itacademy.misbackend.mapper.AppointmentMapper;
+import itacademy.misbackend.mapper.MedicalRecordMapper;
 import itacademy.misbackend.repo.MedicalRecordRepo;
 import itacademy.misbackend.service.MedicalRecordService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService {
       private MedicalRecordRepo repo;
-      private AppointmentMapper mapper;
+      private MedicalRecordMapper mapper;
     @Override
     public MedicalRecordDto create(MedicalRecordDto recordDto) {
-     /*   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-*/
-        MedicalRecord record = MedicalRecord.builder()
-                .summary(recordDto.getSummary())
-                .notes(recordDto.getNotes())
-              //  .appointments()
-                .createdAt(new Timestamp(System.currentTimeMillis()))
-             //   .createdBy(username)
-                .lastUpdatedAt(new Timestamp(System.currentTimeMillis()))
-             //   .lastUpdatedBy(username)
-                .build();
+     //   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+     //   String username = authentication.getName();
+
+        MedicalRecord record = mapper.toEntity(recordDto);
+        record.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+    //    record.setCreatedBy(username);
+        record.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
+     //   record.setLastUpdatedBy(username);
 
         repo.save(record);
-
-        recordDto.setCreatedAt(record.getCreatedAt());
-        recordDto.setLastUpdatedAt(record.getLastUpdatedAt());
-
-        return recordDto;
+        return mapper.toDto(record);
     }
 
     @Override
@@ -44,16 +35,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         if (record == null) {
             throw new NullPointerException("Медицинская запись с id " + id + " не найдена!");
         }
-        return   MedicalRecordDto.builder()
-                .id(record.getId())
-                .summary(record.getSummary())
-                .notes(record.getNotes())
-                .appointments(mapper.toDtoList(record.getAppointments()))
-                .createdAt(record.getCreatedAt())
-                .createdBy(record.getCreatedBy())
-                .lastUpdatedAt(record.getLastUpdatedAt())
-                .lastUpdatedBy(record.getLastUpdatedBy())
-                .build();
+        return  mapper.toDto(record);
     }
 
     @Override
@@ -62,31 +44,17 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         if (recordList.isEmpty()) {
             throw new NullPointerException("Записей нет!");
         }
-        List<MedicalRecordDto> recordDtoList = new ArrayList<>();
-        for (MedicalRecord record : recordList) {
-            MedicalRecordDto recordDto = MedicalRecordDto.builder()
-                    .id(record.getId())
-                    .summary(record.getSummary())
-                    .notes(record.getNotes())
-                    .appointments(mapper.toDtoList(record.getAppointments()))
-                    .createdAt(record.getCreatedAt())
-                    .createdBy(record.getCreatedBy())
-                    .lastUpdatedAt(record.getLastUpdatedAt())
-                    .lastUpdatedBy(record.getLastUpdatedBy())
-                    .build();
-            recordDtoList.add(recordDto);
-        }
-        return recordDtoList;
+        return mapper.toDtoList(recordList);
     }
 
-    @Override
+    @Override //переписать???
     public MedicalRecordDto update(Long id, MedicalRecordDto dto) {
         MedicalRecord record = repo.findByDeletedAtIsNullAndId(id);
             if (record == null) {
                 throw new NullPointerException("Медицинская запись с id " + id + " не найдена!");
             }
         record.setNotes(dto.getNotes());
-        record.setSummary(dto.getSummary());
+        record.setRecommendation(dto.getRecommendation());
         record.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
        // record.setLastUpdatedBy(username);
 

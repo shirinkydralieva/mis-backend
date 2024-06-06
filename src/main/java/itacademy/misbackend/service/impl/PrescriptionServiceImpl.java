@@ -1,7 +1,7 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.PrescriptionDto;
-import itacademy.misbackend.entity.Prescription;
+import itacademy.misbackend.entity.helper.Prescription;
 import itacademy.misbackend.repo.PrescriptionRepo;
 import itacademy.misbackend.service.PrescriptionService;
 import org.springframework.stereotype.Service;

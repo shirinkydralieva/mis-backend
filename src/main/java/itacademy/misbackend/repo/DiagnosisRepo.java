@@ -1,6 +1,6 @@
 package itacademy.misbackend.repo;
 
-import itacademy.misbackend.entity.Diagnosis;
+import itacademy.misbackend.entity.helper.Diagnosis;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

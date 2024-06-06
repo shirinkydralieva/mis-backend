@@ -19,7 +19,6 @@ public class AppointmentMapperImpl implements AppointmentMapper {
                 .doctorId(appointment.getDoctor().getId())
                 .patientId(appointment.getPatient().getId())
                 .appointmentDate(appointment.getAppointmentDate())
-                .notes(appointment.getNotes())
                 .build();
     }
 
@@ -29,7 +28,6 @@ public class AppointmentMapperImpl implements AppointmentMapper {
                 .reason(appointmentDto.getReason())
                 .status(appointmentDto.getStatus())
                 .appointmentDate(appointmentDto.getAppointmentDate())
-                .notes(appointmentDto.getNotes())
                 .build();
     }
 
