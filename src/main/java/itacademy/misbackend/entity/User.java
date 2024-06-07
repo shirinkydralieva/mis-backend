@@ -22,8 +22,11 @@ public class User {
     @SequenceGenerator(name = "user_seq_generator", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
     @Column(unique = true, nullable = false)
+    private String firstName;
+    private String lastName;
+    private String patronymic; //Отчество
     private String username;
-    private String password;
+    private String password; //Валидация
     @Column(unique = true, nullable = false)
     private String email;
     @Column(unique = true, nullable = false)
