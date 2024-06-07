@@ -29,4 +29,16 @@ public class ServiceType {
     private Department department;
 
     private Timestamp deletedAt;
+
+    @Override
+    public String toString() {
+        return "ServiceType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", department=" + department.getName() + "(id=" + department.getId() +
+                "), deletedAt=" + deletedAt +
+                '}';
+    }
 }

@@ -50,5 +50,22 @@ public class MedicalRecord {
     private String deletedBy;
     private Timestamp deletedAt;
 
-
+    @Override
+    public String toString() {
+        return "MedicalRecord{" +
+                "id=" + id +
+                ", appointment=" + appointment +
+                ", medCardID=" + medCard.getId() +
+                ", diagnosis=" + diagnosis +
+                ", prescription=" + prescription +
+                ", notes='" + notes + '\'' +
+                ", recommendation='" + recommendation + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
+                ", lastUpdatedAt=" + lastUpdatedAt +
+                ", deletedBy='" + deletedBy + '\'' +
+                ", deletedAt=" + deletedAt +
+                '}';
+    }
 }
