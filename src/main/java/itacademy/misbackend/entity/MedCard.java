@@ -36,4 +36,16 @@ public class MedCard {
     private String deletedBy;
     private Timestamp deletedAt;
 
+    @Override
+    public String toString() {
+        return "MedCard{" +
+                "id=" + id +
+                ", patient=" + patient +
+                ", medicalRecords=" + medicalRecords +
+                ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
+                ", lastUpdatedAt=" + lastUpdatedAt +
+                ", deletedBy='" + deletedBy + '\'' +
+                ", deletedAt=" + deletedAt +
+                '}';
+    }
 }

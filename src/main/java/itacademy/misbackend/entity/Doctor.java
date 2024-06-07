@@ -46,6 +46,7 @@ public class Doctor {
     @Override
     public String toString() {
         return "Doctor [id=" + id
+                + ", department=" + department.getName()
                 + ", appointments=" + appointments.stream().map(Appointment::getId).toList()
                 + "]";
     }

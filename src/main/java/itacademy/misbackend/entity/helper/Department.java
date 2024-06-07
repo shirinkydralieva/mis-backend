@@ -38,4 +38,5 @@ public class Department {
 
     private LocalDateTime deletedAt;
     private String deletedBy;
+
 }
