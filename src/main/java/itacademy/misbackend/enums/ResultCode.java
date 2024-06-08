@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum ResultCode {
     OK(200),
+    CREATED(201),
     FAIL(400),
     UNAUTHORIZED(401),
     FORBIDDEN(403),
