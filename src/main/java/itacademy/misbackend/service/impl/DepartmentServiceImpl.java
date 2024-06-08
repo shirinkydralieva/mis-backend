@@ -1,7 +1,6 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.DepartmentDto;
-import itacademy.misbackend.entity.MedicalRecord;
 import itacademy.misbackend.entity.helper.Department;
 import itacademy.misbackend.mapper.DepartmentMapper;
 import itacademy.misbackend.repo.DepartmentRepo;
@@ -27,10 +26,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         department = repo.save(department);
         /*
             Для создания отделения достаточно передать параметры name и description.
-            Список врачей в отделении пополняется автоматически при создании врача.
+            Список врачей и услуг в отделении пополняется автоматически при их создании.
             (Если id отделения верно указан и отделение действительно существует)
          */
-        log.info("КОНЕЦ: c - create {} ", department);
+        log.info("КОНЕЦ: DepartmentServiceImpl - create {} ", department);
         return mapper.toDto(department);
     }
 
@@ -49,13 +48,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentDto> getAll() {
         log.info("СТАРТ: DepartmentServiceImpl - getAll()");
-        var list = repo.findAllByDeletedAtIsNullAndDeletedByIsNull();
-        if (list.isEmpty()) {
+        var departments = repo.findAllByDeletedAtIsNullAndDeletedByIsNull();
+        if (departments.isEmpty()) {
             log.error("Список отделений пуст");
             throw new NullPointerException("Отделений нет!");
         }
         log.info("КОНЕЦ: DepartmentServiceImpl - getAll()");
-        return mapper.toDtoList(list);
+        return mapper.toDtoList(departments);
     }
 
     @Override
@@ -73,6 +72,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             log.info("КОНЕЦ: DepartmentServiceImpl - update(). Отделение обновлено - {}", department);
             return mapper.toDto(department);
         }
+
         return null;
     }
 

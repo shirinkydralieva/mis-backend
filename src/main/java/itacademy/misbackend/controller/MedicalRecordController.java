@@ -92,29 +92,16 @@ public class MedicalRecordController {
         }
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Мед запись найдена и успешно изменена",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MedicalRecordDto.class))}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Мед запись не найдена"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Не удалось изменить Мед запись.")
-    })
-    @Operation(summary = "Этот роут выполняет поиск Мед записи по id и обновляет")
-    @PutMapping("/update")
-    public ResponseEntity<MedicalRecordDto> update(@RequestParam Long id, @RequestBody MedicalRecordDto recordDto) {
-        try {
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<MedicalRecordDto> update(@PathVariable Long id, @RequestBody MedicalRecordDto recordDto) {
+     //   try {
             return new ResponseEntity<>(service.update(id, recordDto),HttpStatus.OK);
-        } catch (NullPointerException e) {
+     /*   } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        }*/
     }
 
     @ApiResponses(value = {
@@ -131,8 +118,8 @@ public class MedicalRecordController {
                     description = "Не удалось удалить мед запись.")
     })
     @Operation(summary = "Этот роут удаляет мед запись по id")
-    @PutMapping("/delete")
-    public ResponseEntity<String> delete(@RequestParam Long id) {
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
         } catch (NullPointerException e) {

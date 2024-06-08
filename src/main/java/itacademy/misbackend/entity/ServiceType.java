@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -28,7 +28,7 @@ public class ServiceType {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     @Override
     public String toString() {

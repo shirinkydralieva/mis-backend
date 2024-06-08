@@ -52,13 +52,13 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<DoctorDto> getAll() {
         log.info("СТАРТ: DoctorServiceImpl - getAll()");
-        var doctorList = doctorRepo.findAllByDeletedAtIsNullAndDeletedByIsNull();
-        if (doctorList == null) {
+        var doctors = doctorRepo.findAllByDeletedAtIsNullAndDeletedByIsNull();
+        if (doctors == null) {
             log.error("Список Врачей пуст!");
             throw new NullPointerException("Врачей нет!");
         }
         log.info("КОНЕЦ: DoctorServiceImpl - getAll()");
-        return doctorMapper.toDtoList(doctorList);
+        return doctorMapper.toDtoList(doctors);
     }
 
     @Override
@@ -101,7 +101,8 @@ public class DoctorServiceImpl implements DoctorService {
             log.info("КОНЕЦ: DoctorServiceImpl - update(). Записи о Враче обновлены - {}", updateDto);
             return doctorMapper.toDto(doctor);
         }
-
+        log.error("Врач с id " + id + " не найден!");
+     //   throw new NullPointerException("Медицинская запись не найдена!");
         return null;
     }
 

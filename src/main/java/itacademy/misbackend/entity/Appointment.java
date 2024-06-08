@@ -42,7 +42,7 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment [id=" + id
-                + ", doctorId="
-                + doctor.getId() + "]";
+                + ", doctorId=" + doctor.getId()
+                + ", patientId=" + patient.getId()+ "]";
     }
 }

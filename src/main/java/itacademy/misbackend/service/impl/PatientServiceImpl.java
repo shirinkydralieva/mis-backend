@@ -49,7 +49,7 @@ public class PatientServiceImpl implements PatientService {
 
         patient.setMedCard(medCard);
         patientRepo.save(patient);
-        log.info("КОНЕЦ: PatientServiceImpl - create {} ", patient);
+        log.info("КОНЕЦ: PatientServiceImpl - create {} ", patientMapper.toDto(patient));
         return patientMapper.toDto(patient);
     }
 

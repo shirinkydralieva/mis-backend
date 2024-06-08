@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -19,7 +20,6 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
     private final ServiceTypeRepo repo;
     private final DepartmentRepo departmentRepo;
 
-    // Добавить юзера (аутентификация)??
     @Override
     public ServiceTypeDto create(ServiceTypeDto dto) {
         log.info("СТАРТ: ServiceTypeServiceImpl - create() {}", dto);
@@ -58,13 +58,13 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
     @Override
     public List<ServiceTypeDto> getAll() {
         log.info("СТАРТ: ServiceTypeServiceImpl - getAll()");
-        List<ServiceType> serviceList = repo.findAllByDeletedAtIsNull();
-        if (serviceList.isEmpty()) {
+        List<ServiceType> services = repo.findAllByDeletedAtIsNull();
+        if (services.isEmpty()) {
             log.error("Услуг нет!");
             throw new NullPointerException("Список услуг пуст!");
         }
         var dtoList = new ArrayList<ServiceTypeDto>();
-        for (ServiceType serviceType : serviceList) {
+        for (ServiceType serviceType : services) {
             ServiceTypeDto dto = ServiceTypeDto.builder()
                     .id(serviceType.getId())
                     .name(serviceType.getName())
@@ -113,7 +113,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
             log.error("Услуга с id " + id + " не найдена!");
             throw new NullPointerException("Услуга не найдена!");
         }
-        serviceType.setDeletedAt(new Timestamp(System.currentTimeMillis()));
+        serviceType.setDeletedAt(LocalDateTime.now());
         repo.save(serviceType);
         log.info("КОНЕЦ: ServiceTypeServiceImpl - delete(). Услуга {} (id {}) удалена", serviceType.getName(), id);
         return "Услуга удалена";
