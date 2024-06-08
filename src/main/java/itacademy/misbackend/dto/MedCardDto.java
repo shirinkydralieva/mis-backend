@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -20,6 +20,6 @@ public class MedCardDto {
     private List<MedicalRecordDto> medicalRecords;
 
     private String lastUpdatedBy;
-    private Timestamp lastUpdatedAt;
+    private LocalDateTime lastUpdatedAt;
 
 }

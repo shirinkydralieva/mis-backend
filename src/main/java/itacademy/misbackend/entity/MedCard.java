@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,10 +31,10 @@ public class MedCard {
     private List<MedicalRecord> medicalRecords;
 
     private String lastUpdatedBy;
-    private Timestamp lastUpdatedAt;
+    private LocalDateTime lastUpdatedAt;
 
     private String deletedBy;
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     @Override
     public String toString() {

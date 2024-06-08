@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -23,8 +24,6 @@ public class Diagnosis {
     private String description;
     private String code;
 
-    private Timestamp diagnosisDate;
-    private Timestamp lastUpdatedAt;
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
 }

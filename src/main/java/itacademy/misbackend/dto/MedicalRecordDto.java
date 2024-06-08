@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -26,9 +26,9 @@ public class MedicalRecordDto {
     private String recommendation;
 
     private String createdBy;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     private String lastUpdatedBy;
-    private Timestamp lastUpdatedAt;
+    private LocalDateTime lastUpdatedAt;
 
 }

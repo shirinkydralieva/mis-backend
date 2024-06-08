@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -78,7 +79,7 @@ public class MedCardServiceImpl implements MedCardService {
 
         // что и как обновлять??
 
-        medCard.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        medCard.setLastUpdatedAt(LocalDateTime.now());
         // medCard.setLastUpdatedBy(username);
 
         repo.save(medCard);
@@ -100,7 +101,7 @@ public class MedCardServiceImpl implements MedCardService {
             log.error("Мед карта с id " + id + " не найдена!");
             throw new NullPointerException("Мед карта не найдена!");
         }
-        medCard.setDeletedAt(new Timestamp(System.currentTimeMillis()));
+        medCard.setDeletedAt(LocalDateTime.now());
         //  record.setDeletedBy(username);
 
         repo.save(medCard);

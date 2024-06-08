@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -42,13 +42,13 @@ public class MedicalRecord {
     private String recommendation;
 
     private String createdBy;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     private String lastUpdatedBy;
-    private Timestamp lastUpdatedAt;
+    private LocalDateTime lastUpdatedAt;
 
     private String deletedBy;
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     @Override
     public String toString() {

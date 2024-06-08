@@ -33,8 +33,7 @@ public class Department {
 
     @JsonIgnore
     @OneToMany(mappedBy = "department")
-    private List<ServiceType> serviceList;
-
+    private List<ServiceType> services;
 
     private LocalDateTime deletedAt;
     private String deletedBy;
