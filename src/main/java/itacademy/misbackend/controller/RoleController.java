@@ -4,19 +4,22 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.entity.helper.Role;
+import itacademy.misbackend.enums.ResultCode;
+import itacademy.misbackend.enums.ResultCodeAPI;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.service.RoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.hibernate.PropertyValueException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/api/roles")
 public class RoleController {
 
@@ -33,8 +36,32 @@ public class RoleController {
     })
     @Operation(summary = "Этот роут для создание ролей")
     @PostMapping()
-    public ResponseEntity<Long> save(@RequestBody Role role) {
-        return service.save(role);
+    public CustomResponseMessage<Long> save(@Valid @RequestBody Role role) {
+        try{
+            return new CustomResponseMessage<>(
+                    service.save(role),
+                    ResultCodeAPI.SUCCESS,
+                    "Роль успешно сохранена",
+                    null,
+                    ResultCode.CREATED
+            );
+        } catch (PropertyValueException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка: проверьте поле name",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
     @ApiResponses(value = {
@@ -48,9 +75,32 @@ public class RoleController {
     })
     @Operation(summary = "Этот роут возвращает весь список ролей")
     @GetMapping()
-    public ResponseEntity<List<Role>> getAll() {
-        List<Role> roles = service.findAll();
-        return new ResponseEntity<>(roles, HttpStatus.OK);
+    public CustomResponseMessage<List<Role>> getAll() {
+        try {
+            return new CustomResponseMessage<>(
+                    service.findAll(),
+                    ResultCodeAPI.SUCCESS,
+                    "Все роли успешно получены",
+                    null,
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
     @ApiResponses(value = {
@@ -64,12 +114,31 @@ public class RoleController {
     })
     @Operation(summary = "Этот роут возвращает роли по айди")
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getById(@PathVariable Long id) {
-        Role role = service.findById(id);
-        if (role != null) {
-            return new ResponseEntity<>(role, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public CustomResponseMessage<Role> getById(@PathVariable Long id) {
+        try {
+            return new CustomResponseMessage<>(
+                    service.findById(id),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    null,
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
         }
     }
 
@@ -82,10 +151,43 @@ public class RoleController {
                     responseCode = "400",
                     description = "Не удалось обновить роль")
     })
-    @Operation(summary = "Этот роут для обновление ролей")
+    @Operation(summary = "Этот роут для обновления ролей " +
+                         "Обновляет поле name")
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Role role) {
-        return service.update(id, role);
+    public CustomResponseMessage<Role> update(@PathVariable Long id, @RequestBody Role role) {
+        try {
+            return new CustomResponseMessage<>(
+                    service.update(id, role),
+                    ResultCodeAPI.SUCCESS,
+                    "Роль успешно обновлена",
+                    null,
+                    ResultCode.OK
+            );
+        } catch (PropertyValueException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка: проверьте поле name",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
     @ApiResponses(value = {
@@ -99,7 +201,31 @@ public class RoleController {
     })
     @Operation(summary = "Этот роут для удаление ролей")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        return service.delete(id);
+    public CustomResponseMessage<String> delete(@PathVariable Long id) {
+        try {
+            return new CustomResponseMessage<>(
+                    service.delete(id),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    null,
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 }

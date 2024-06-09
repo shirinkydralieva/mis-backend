@@ -7,13 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DoctorDto {
+public class StaffDto {
     private Long id;
 
     @NotBlank(message = "Поле «Имя» не может быть пустым")
@@ -26,9 +24,9 @@ public class DoctorDto {
 
     private String patronymic;
 
-    private String specialization;
-    private Long departmentId;
-
     private Long userId;
-    private List<AppointmentDto> appointments;
+
+    @NotBlank(message = "Поле «Должность» не может быть пустым")
+    @NotNull
+    private String position;
 }

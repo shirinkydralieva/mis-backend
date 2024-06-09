@@ -20,9 +20,7 @@ public class DoctorMapperImpl implements DoctorMapper {
                 .firstName(doctor.getFirstName())
                 .lastName(doctor.getLastName())
                 .patronymic(doctor.getPatronymic())
-                .phoneNumber(doctor.getPhoneNumber())
                 .specialization(doctor.getSpecialization())
-                .qualification(doctor.getQualification())
                 .build();
         if (doctor.getAppointments() != null) {
             dto.setAppointments(new AppointmentMapperImpl().toDtoList(doctor.getAppointments()));
@@ -38,15 +36,12 @@ public class DoctorMapperImpl implements DoctorMapper {
 
     @Override
     public Doctor toEntity(DoctorDto doctorDto) {
-        Doctor doctor = Doctor.builder()
+        return Doctor.builder()
                 .firstName(doctorDto.getFirstName())
                 .lastName(doctorDto.getLastName())
                 .patronymic(doctorDto.getPatronymic())
-                .phoneNumber(doctorDto.getPhoneNumber())
                 .specialization(doctorDto.getSpecialization())
-                .qualification(doctorDto.getQualification())
                 .build();
-        return doctor;
     }
 
     @Override

@@ -24,18 +24,17 @@ public class Doctor {
     private Long id;
     private String firstName;
     private String lastName;
-    private String patronymic; //Отчество
-    private String specialization; //специальность врача
-    private String qualification;
+    private String patronymic;
+    private String specialization;
     @ManyToOne
     @JoinColumn(name = "department_id")
-    private Department department; //отделение
-    private String phoneNumber;
-    @OneToOne
+    private Department department;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
     private LocalDateTime deletedAt;

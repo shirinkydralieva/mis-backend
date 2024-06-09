@@ -5,12 +5,15 @@ import itacademy.misbackend.entity.MedicalRecord;
 import itacademy.misbackend.entity.helper.Address;
 import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.entity.Patient;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.mapper.AddressMapper;
 import itacademy.misbackend.mapper.PassportMapper;
 import itacademy.misbackend.mapper.PatientMapper;
 import itacademy.misbackend.repo.*;
 import itacademy.misbackend.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,9 +28,8 @@ public class PatientServiceImpl implements PatientService {
     private final PassportRepo passportRepo;
     private final AddressMapper addressMapper;
     private final PassportMapper passportMapper;
-    private final UserRepo userRepo;
     private final MedicalRecordRepo recordRepo;
-
+    private final UserRepo userRepo;
     @Override
     public PatientDto create(PatientDto patientDto) {
         Patient patient = patientMapper.toEntity(patientDto);
@@ -36,6 +38,9 @@ public class PatientServiceImpl implements PatientService {
         }
         if (patientDto.getPassport() != null) {
             passportRepo.save(patient.getPassport());
+        }
+        if (userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()) == null) {
+            throw new NotFoundException("Пользователь с id " + patientDto.getUserId() + " не найден");
         }
         patient.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()));
         patient = patientRepo.save(patient);
@@ -66,20 +71,11 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto update(Long id, PatientDto patientDto) {
         Patient patient = patientRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
         if (patient != null){
-            if (patientDto.getFirstName() != null){
-                patient.setFirstName(patientDto.getFirstName());
-            }
-            if (patientDto.getLastName() != null){
-                patient.setLastName(patientDto.getLastName());
-            }
-            if (patientDto.getPatronymic() != null){
-                patient.setPatronymic(patientDto.getPatronymic());
-            }
             if (patientDto.getDateOfBirth() != null){
                 patient.setDateOfBirth(patientDto.getDateOfBirth());
             }
-            if (patientDto.getGender() != null){
-                patient.setGender(patientDto.getGender());
+            if (patientDto.getSex() != null){
+                patient.setSex(patientDto.getSex());
             }
             if (patientDto.getPassport() != null){
                 Passport passport = passportRepo.save(passportMapper.toEntity(patientDto.getPassport()));
@@ -91,9 +87,6 @@ public class PatientServiceImpl implements PatientService {
             if (patientDto.getAddress() != null){
                 Address address = addressRepo.save(addressMapper.toEntity(patientDto.getAddress()));
                 patient.setAddress(address);
-            }
-            if (patientDto.getPhoneNumber() != null){
-                patient.setPhoneNumber(patientDto.getPhoneNumber());
             }
             if (patientDto.getPlaceOfWork() != null){
                 patient.setPlaceOfWork(patientDto.getPlaceOfWork());
@@ -108,11 +101,11 @@ public class PatientServiceImpl implements PatientService {
     public String delete(Long id) {
         Patient patient = patientRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
 
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (patient != null) {
             patient.setDeletedAt(LocalDateTime.now());
-         //   patient.setDeletedBy(authentication.getName());
+            patient.setDeletedBy(authentication.getName());
             return "Пациент с id " + id + " удален";
         }
         return "Пациент с id " + id + " не найден";
