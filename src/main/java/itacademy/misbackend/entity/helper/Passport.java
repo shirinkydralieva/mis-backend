@@ -1,5 +1,6 @@
 package itacademy.misbackend.entity.helper;
 
+import itacademy.misbackend.enums.PassportSeries;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +16,11 @@ public class Passport {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passport_seq_generator")
     @SequenceGenerator(name = "passport_seq_generator", sequenceName = "passport_seq", allocationSize = 1)
     private Long id;
-    @Column(length = 2)
-    private String series;
 
-    @Column(length = 7)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PassportSeries series;
+
+    @Column(length = 7, nullable = false)
     private String number;
 }

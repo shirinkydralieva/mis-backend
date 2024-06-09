@@ -48,9 +48,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         AuthenticatedUser authenticatedUser = new AuthenticatedUser();
         authenticatedUser.setId(myUser.getId());
-        authenticatedUser.setFirstName(myUser.getFirstName());
-        authenticatedUser.setLastName(myUser.getLastName());
-        authenticatedUser.setPatronymic(myUser.getPatronymic());
+        authenticatedUser.setUsername(myUser.getUsername());
 
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 

@@ -3,6 +3,7 @@ package itacademy.misbackend.service.impl;
 import itacademy.misbackend.dto.DoctorDto;
 import itacademy.misbackend.entity.helper.Department;
 import itacademy.misbackend.entity.Doctor;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.mapper.DoctorMapper;
 import itacademy.misbackend.repo.DepartmentRepo;
 import itacademy.misbackend.repo.DoctorRepo;
@@ -10,6 +11,8 @@ import itacademy.misbackend.repo.UserRepo;
 import itacademy.misbackend.service.DoctorService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,10 +27,16 @@ public class DoctorServiceImpl implements DoctorService {
     private final UserRepo userRepo;
 
     @Override
-    public DoctorDto create(DoctorDto dto) {
+    public DoctorDto save(DoctorDto dto) {
         Doctor doctor = doctorMapper.toEntity(dto);
+        if (departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getDepartmentId()) == null) {
+            throw new NotFoundException("Отделение с id " + dto.getDepartmentId() + " не найдено");
+        }
+        if (userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId()) == null) {
+            throw new NotFoundException("Пользователь с id " + dto.getUserId() + " не найден");
+        }
         doctor.setDepartment(departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getDepartmentId()));
-        doctor.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId())); //!
+        doctor.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId()));
         doctor = doctorRepo.save(doctor);
         return doctorMapper.toDto(doctor);
     }
@@ -46,23 +55,8 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorDto update(Long id, DoctorDto updateDto) {
         Doctor doctor = doctorRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
         if (doctor != null) {
-            if (updateDto.getFirstName() != null) {
-                doctor.setFirstName(updateDto.getFirstName());
-            }
-            if (updateDto.getLastName() != null) {
-                doctor.setLastName(updateDto.getLastName());
-            }
-            if (updateDto.getPatronymic() != null) {
-                doctor.setPatronymic(updateDto.getPatronymic());
-            }
             if (updateDto.getSpecialization() != null) {
                 doctor.setSpecialization(updateDto.getSpecialization());
-            }
-            if (updateDto.getQualification() != null) {
-                doctor.setQualification(updateDto.getQualification());
-            }
-            if (updateDto.getPhoneNumber() != null) {
-                doctor.setPhoneNumber(updateDto.getPhoneNumber());
             }
             if (updateDto.getDepartmentId() != null) {
                 Department department = departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(updateDto.getDepartmentId());
@@ -74,9 +68,6 @@ public class DoctorServiceImpl implements DoctorService {
                     throw new EntityNotFoundException("Отделение с id " + updateDto.getDepartmentId() + " не найдено");
                 }
             }
-            /* if (updateDto.getUserId() != null) {
-                doctor.setUser(...);
-            }*/
             doctor = doctorRepo.save(doctor);
             return doctorMapper.toDto(doctor);
         }
@@ -87,11 +78,11 @@ public class DoctorServiceImpl implements DoctorService {
     public String delete(Long id) {
         Doctor doctor = doctorRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
 
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (doctor != null) {
             doctor.setDeletedAt(LocalDateTime.now());
-            //doctor.setDeletedBy(authentication.getName());
+            doctor.setDeletedBy(authentication.getName());
             return "Врач с id " + id + " удален";
         }
         return "Врач с id " + id + " не найден";

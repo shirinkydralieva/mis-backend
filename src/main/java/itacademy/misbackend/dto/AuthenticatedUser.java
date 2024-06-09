@@ -13,8 +13,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthenticatedUser {
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String patronymic;
+    private String username;
     private Map<String, String> tokens;
 }

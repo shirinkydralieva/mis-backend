@@ -15,10 +15,9 @@ public class DoctorController {
 
     @PostMapping()
     public ResponseEntity<DoctorDto> create (@RequestBody DoctorDto doctorDto) {
-        DoctorDto createdDoctor = doctorService.create(doctorDto);
+        DoctorDto createdDoctor = doctorService.save(doctorDto);
         if (createdDoctor == null) {
             return ResponseEntity.badRequest().build();
-            //Временная мера, пока не реализована обработка ошибок
         }
         return ResponseEntity.ok(createdDoctor);
     }

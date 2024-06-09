@@ -24,10 +24,9 @@ public class PatientMapperImpl implements PatientMapper {
                 .lastName(patient.getLastName())
                 .patronymic(patient.getPatronymic())
                 .dateOfBirth(patient.getDateOfBirth())
-                .gender(patient.getGender())
+                .sex(patient.getSex())
                 .passport(passportMapper.toDto(patient.getPassport()))
                 .taxId(patient.getTaxId())
-                .phoneNumber(patient.getPhoneNumber())
                 .address(addressMapper.toDto(patient.getAddress()))
                 .placeOfWork(patient.getPlaceOfWork())
                 .userId(patient.getUser().getId())
@@ -45,9 +44,8 @@ public class PatientMapperImpl implements PatientMapper {
                 .lastName(patientDto.getLastName())
                 .patronymic(patientDto.getPatronymic())
                 .dateOfBirth(patientDto.getDateOfBirth())
-                .gender(patientDto.getGender())
+                .sex(patientDto.getSex())
                 .taxId(patientDto.getTaxId())
-                .phoneNumber(patientDto.getPhoneNumber())
                 .placeOfWork(patientDto.getPlaceOfWork())
                 .build();
         if (patientDto.getAddress() != null) {

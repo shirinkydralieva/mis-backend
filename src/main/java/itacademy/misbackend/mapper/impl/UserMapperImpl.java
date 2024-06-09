@@ -15,14 +15,13 @@ public class UserMapperImpl implements UserMapper {
         UserDto dto = UserDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .blocked(user.isBlocked())
                 .build();
         if (user.getRoles() != null) {
             dto.setRoles(user.getRoles());
-        } //Написать метод для доббавления роли пользователю
+        }
         return dto;
     }
 
@@ -35,9 +34,6 @@ public class UserMapperImpl implements UserMapper {
                 .phoneNumber(userDto.getPhoneNumber())
                 .blocked(userDto.isBlocked())
                 .build();
-        if (userDto.getRoles() != null) {
-            user.setRoles(userDto.getRoles());
-        }
         return user;
     }
 

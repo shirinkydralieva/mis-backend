@@ -6,6 +6,8 @@ import itacademy.misbackend.mapper.DepartmentMapper;
 import itacademy.misbackend.repo.DepartmentRepo;
 import itacademy.misbackend.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -60,11 +62,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     public String delete(Long id) {
         Department department = repo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
 
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (department != null) {
             department.setDeletedAt(LocalDateTime.now());
-            //department.setDeletedBy(authentication.getName());
+            department.setDeletedBy(authentication.getName());
             return "Отделение " + department.getName() + " удалено";
         }
         return "Отделение с id " + id + " не найдено";

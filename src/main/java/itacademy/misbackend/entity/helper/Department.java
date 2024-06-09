@@ -24,7 +24,7 @@ public class Department {
     @Column(unique = true)
     private String name;
     private String description;
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<Doctor> doctors;
 
     private LocalDateTime deletedAt;

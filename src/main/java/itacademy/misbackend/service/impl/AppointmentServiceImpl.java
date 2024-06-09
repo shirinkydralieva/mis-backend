@@ -8,6 +8,8 @@ import itacademy.misbackend.repo.DoctorRepo;
 import itacademy.misbackend.repo.PatientRepo;
 import itacademy.misbackend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,11 +28,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentMapper.toEntity(appointmentDto);
         if (appointmentDto.getDoctorId() != null) {
             appointment.setDoctor(doctorRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(appointmentDto.getDoctorId()));
-            //Нужно проверить, добавится ли автоматически у врача в лист прием после его создания
         }
         if (appointmentDto.getPatientId() != null) {
             appointment.setPatient(patientRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(appointmentDto.getPatientId()));
-            //То же самое, что и с врачом
         }
         appointment = appointmentRepo.save(appointment);
         return appointmentMapper.toDto(appointment);
@@ -76,11 +76,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     public String delete(Long id) {
         Appointment appointment = appointmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
 
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (appointment != null) {
             appointment.setDeletedAt(LocalDateTime.now());
-            //appointment.setDeletedBy(authentication.getName());
+            appointment.setDeletedBy(authentication.getName());
             appointmentRepo.save(appointment);
             return "Запись приема с id " + id + " успешно удалена";
         }

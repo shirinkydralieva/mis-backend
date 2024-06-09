@@ -8,15 +8,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public enum ResultCode {
-    OK(200),
-    CREATED(201),
-    FAIL(400),
-    UNAUTHORIZED(401),
-    FORBIDDEN(403),
-    NOT_FOUND(404),
-    INTERNAL_SERVER_ERROR(500),
-    ;
+public enum PassportSeries {
+    AN("AN"), ID("ID"), AC("ID"), AD("AD"), AS("AS"), PE("PE"), PD("PD"), PS("PS");
 
-    int httpCode;
+    String series;
 }

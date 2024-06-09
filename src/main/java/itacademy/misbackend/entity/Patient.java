@@ -2,7 +2,7 @@ package itacademy.misbackend.entity;
 
 import itacademy.misbackend.entity.helper.Address;
 import itacademy.misbackend.entity.helper.Passport;
-import itacademy.misbackend.enums.Gender;
+import itacademy.misbackend.enums.Sex;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,17 +26,25 @@ public class Patient {
     private Long id;
     private String firstName;
     private String lastName;
-    private String patronymic; //Отчество
-    private Gender gender;
+    private String patronymic;
+
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
+
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
+
     @OneToOne(fetch = FetchType.EAGER)
     private Passport passport;
-    @Column(unique = true)
-    private String taxId; //ИНН
+
+    @Column(unique = true, nullable = false)
+    private String taxId;
+
     @OneToOne(fetch = FetchType.EAGER)
     private Address address;
-    private String phoneNumber;
+
     private String placeOfWork;
+
     @OneToOne
     private User user;
 
