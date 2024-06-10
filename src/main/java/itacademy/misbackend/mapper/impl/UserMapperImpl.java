@@ -17,7 +17,7 @@ public class UserMapperImpl implements UserMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .blocked(user.isBlocked())
+                .enabled(user.isEnabled())
                 .build();
         if (user.getRoles() != null) {
             dto.setRoles(user.getRoles());
@@ -32,7 +32,6 @@ public class UserMapperImpl implements UserMapper {
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
                 .phoneNumber(userDto.getPhoneNumber())
-                .blocked(userDto.isBlocked())
                 .build();
         return user;
     }

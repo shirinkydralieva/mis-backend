@@ -16,7 +16,6 @@ import java.util.Set;
 @Table(name = "users")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class User {
     @Id
@@ -33,7 +32,15 @@ public class User {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    private boolean blocked;
+
+    private String verificationToken;
+
+    private boolean isEnabled;
+
+    public User() {
+        super();
+        this.isEnabled=false;
+    }
 
     private LocalDateTime lastAuthentication;
 
