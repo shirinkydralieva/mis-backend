@@ -2,7 +2,7 @@ package itacademy.misbackend.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import itacademy.misbackend.dto.AppointmentDto;
-import itacademy.misbackend.dto.ResponseMessageAPI;
+import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
 import itacademy.misbackend.service.AppointmentService;
@@ -17,52 +17,52 @@ import java.util.List;
 public class AppointmentController {
     private final AppointmentService appointmentService;
     @PostMapping()
-    public ResponseMessageAPI<AppointmentDto> create (@RequestBody AppointmentDto appointmentDto) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<AppointmentDto> create (@RequestBody AppointmentDto appointmentDto) {
+        return new CustomResponseMessage<>(
                 appointmentService.create(appointmentDto),
                 ResultCodeAPI.CREATED,
                 null,
                 "success",
-                ResultCode.CREATED.getHttpCode());
+                ResultCode.CREATED);
     }
 
     @GetMapping()
-    public ResponseMessageAPI<List<AppointmentDto>> getAll () {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<List<AppointmentDto>> getAll () {
+        return new CustomResponseMessage<>(
                 appointmentService.getAll(),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Список всех доступных приемов получен",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseMessageAPI<AppointmentDto> getById (@PathVariable Long id) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<AppointmentDto> getById (@PathVariable Long id) {
+        return new CustomResponseMessage<>(
                 appointmentService.getById(id),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Запись приема успешно найден",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseMessageAPI<AppointmentDto> update (@PathVariable Long id, @RequestBody AppointmentDto appointmentDto) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<AppointmentDto> update (@PathVariable Long id, @RequestBody AppointmentDto appointmentDto) {
+        return new CustomResponseMessage<>(
                 appointmentService.update(id, appointmentDto),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Запись приема успешно обновлен",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseMessageAPI<String> delete (@PathVariable Long id) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<String> delete (@PathVariable Long id) {
+        return new CustomResponseMessage<>(
                 appointmentService.delete(id),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Запись приема успешно удален",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 }

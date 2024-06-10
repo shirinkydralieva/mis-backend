@@ -1,8 +1,8 @@
 package itacademy.misbackend.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.dto.DoctorDto;
-import itacademy.misbackend.dto.ResponseMessageAPI;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
 import itacademy.misbackend.service.DoctorService;
@@ -18,52 +18,52 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @PostMapping()
-    public ResponseMessageAPI<DoctorDto> create (@RequestBody DoctorDto doctorDto) {
-        return new ResponseMessageAPI<>(
-                doctorService.create(doctorDto),
+    public CustomResponseMessage<DoctorDto> create (@RequestBody DoctorDto doctorDto) {
+        return new CustomResponseMessage<>(
+                doctorService.save(doctorDto),
                 ResultCodeAPI.CREATED,
                 null,
                 "success",
-                ResultCode.CREATED.getHttpCode());
+                ResultCode.CREATED);
     }
 
     @GetMapping()
-    public ResponseMessageAPI<List<DoctorDto>> getAll () {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<List<DoctorDto>> getAll () {
+        return new CustomResponseMessage<>(
                 doctorService.getAll(),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Список всех доступных врачей получен",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseMessageAPI<DoctorDto> getById (@PathVariable Long id) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<DoctorDto> getById (@PathVariable Long id) {
+        return new CustomResponseMessage<>(
                 doctorService.getById(id),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Врач успешно найден",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseMessageAPI<DoctorDto> update (@PathVariable Long id, @RequestBody DoctorDto doctorDto) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<DoctorDto> update (@PathVariable Long id, @RequestBody DoctorDto doctorDto) {
+        return new CustomResponseMessage<>(
                 doctorService.update(id, doctorDto),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Врач успешно обновлен",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseMessageAPI<String> delete (@PathVariable Long id) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<String> delete (@PathVariable Long id) {
+        return new CustomResponseMessage<>(
                 doctorService.delete(id),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Врач успешно удален",
-                ResultCode.OK.getHttpCode());
+                ResultCode.OK);
     }
 }
