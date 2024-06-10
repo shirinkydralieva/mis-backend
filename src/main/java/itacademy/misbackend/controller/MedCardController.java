@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.dto.MedCardDto;
 import itacademy.misbackend.dto.MedicalRecordDto;
-import itacademy.misbackend.dto.ResponseMessageAPI;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
 import itacademy.misbackend.service.MedCardService;
@@ -25,8 +25,6 @@ import java.util.List;
 public class MedCardController {
     private final MedCardService service;
 
-    //Обработка ошибок
-    //Пока здесь только методы getAll(), getById(id), delete(id)
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -42,13 +40,13 @@ public class MedCardController {
     })
     @Operation(summary = "Этот роут возвращает все доступные мед карты")
     @GetMapping()
-    public ResponseMessageAPI<List<MedCardDto>> getAll() {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<List<MedCardDto>> getAll() {
+        return new CustomResponseMessage<>(
                 service.getAll(),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Все доступные мед карты успешно получены",
-                ResultCode.OK.getHttpCode()
+                ResultCode.OK
         );
     }
     @ApiResponses(value = {
@@ -65,13 +63,13 @@ public class MedCardController {
     })
     @Operation(summary = "Этот роут для поиска мед карт по id.")
     @GetMapping("/{id}")
-    public ResponseMessageAPI<MedCardDto> getById(@PathVariable Long id) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<MedCardDto> getById(@PathVariable Long id) {
+        return new CustomResponseMessage<>(
                 service.getById(id),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Мед карта по id успешно найдена.",
-                ResultCode.OK.getHttpCode()
+                ResultCode.OK
         );
     }
     @ApiResponses(value = {
@@ -88,13 +86,13 @@ public class MedCardController {
     })
     @Operation(summary = "Этот роут для удаления мед карт по id.")
     @PutMapping("/delete")
-    public ResponseMessageAPI<String> delete(@RequestParam Long id) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<String> delete(@RequestParam Long id) {
+        return new CustomResponseMessage<>(
                 service.delete(id),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "Мед карта успешно удалена.",
-                ResultCode.OK.getHttpCode()
+                ResultCode.OK
         );
     }
 
