@@ -23,10 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,9 +40,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь не найден");
         }
-        if (user.isBlocked()) {
-            throw new LockedException("Пользователь заблокирован");
-        }
         user.setLastAuthentication(LocalDateTime.now());
         userRepo.save(user);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -56,7 +50,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDto save(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User user = userMapper.toEntity(userDto);
+        String token = UUID.randomUUID().toString();
         var roles = new HashSet<Role>();
+
         user.setRoles(roles);
         user = userRepo.save(user);
         return userMapper.toDto(user);

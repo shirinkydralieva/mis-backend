@@ -38,6 +38,7 @@ public class UserDto {
     @NotNull(message = "Поле «Номер телефона» не может быть пустым")
     private String phoneNumber;
 
-    private boolean blocked;
+    private boolean enabled;
+
     private Set<Role> roles;
 }
