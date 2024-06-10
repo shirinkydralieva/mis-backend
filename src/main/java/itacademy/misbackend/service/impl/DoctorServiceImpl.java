@@ -29,7 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
     private final UserRepo userRepo;
 
     @Override
-    public DoctorDto create(DoctorDto dto) {
+    public DoctorDto save(DoctorDto dto) {
         log.info("СТАРТ: DoctorServiceImpl - create() {}", dto);
         Doctor doctor = doctorMapper.toEntity(dto);
         if (departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getDepartmentId()) == null) {
