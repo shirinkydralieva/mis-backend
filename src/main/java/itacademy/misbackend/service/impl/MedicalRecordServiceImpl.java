@@ -5,7 +5,6 @@ import itacademy.misbackend.entity.MedicalRecord;
 import itacademy.misbackend.mapper.MedicalRecordMapper;
 import itacademy.misbackend.repo.*;
 import itacademy.misbackend.service.MedicalRecordService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
       private final MedicalRecordMapper mapper;
       private final AppointmentRepo appointmentRepo;
       private final MedCardRepo medCardRepo;
-      private final DiagnosisRepo diagnosisRepo;
-      private final PrescriptionRepo prescriptionRepo;
 
     //@Transactional
       @Override
@@ -31,15 +28,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
      //   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         MedicalRecord record = mapper.toEntity(recordDto);
-        if (recordDto.getDiagnosis() != null) {
-            diagnosisRepo.save(record.getDiagnosis());
-            log.info("Сохранение диагноза");
-        }
-        if (recordDto.getPrescription() != null) {
-            prescriptionRepo.save(record.getPrescription());
-            log.info("Сохранение назначения");
-        }
-
         record.setAppointment(appointmentRepo
                 .findByDeletedAtIsNullAndDeletedByIsNullAndId(
                         recordDto.getAppointmentId() ) );
@@ -92,17 +80,8 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
         log.info("Запись найдена. Исходные данные - {}", record);
 
-        record.getDiagnosis().setDescription( updateDto.getDiagnosis().getDescription() );
-        record.getDiagnosis().setCode( updateDto.getDiagnosis().getCode() );
-        diagnosisRepo.save(record.getDiagnosis());
-        log.info("Диагноз обновлен");
-
-        record.getPrescription().setMedication( updateDto.getPrescription().getMedication() );
-        record.getPrescription().setDosage( updateDto.getPrescription().getDosage() );
-        record.getPrescription().setInstructions( updateDto.getPrescription().getInstructions() );
-        prescriptionRepo.save(record.getPrescription());
-        log.info("Назначение обновлено");
-
+        record.setDiagnosis(updateDto.getDiagnosis());
+        record.setPrescription(updateDto.getPrescription());
         record.setNotes(updateDto.getNotes());
         record.setRecommendation(updateDto.getRecommendation());
         record.setLastUpdatedAt(LocalDateTime.now());
@@ -122,10 +101,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             log.error("Медицинская запись с id " + id + " не найдена!");
             throw new NullPointerException("Медицинская запись не найдена!");
         }
-        record.getDiagnosis().setDeletedAt(LocalDateTime.now());
-        diagnosisRepo.save(record.getDiagnosis());
-        record.getPrescription().setDeletedAt(LocalDateTime.now());
-        prescriptionRepo.save( record.getPrescription());
 
         record.setDeletedAt(LocalDateTime.now());
       //  record.setDeletedBy(authentication.getName());

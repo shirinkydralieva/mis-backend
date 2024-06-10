@@ -9,6 +9,7 @@ import itacademy.misbackend.dto.ResponseMessageAPI;
 import itacademy.misbackend.dto.ServiceTypeDto;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.service.ServiceTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -76,14 +77,14 @@ public class ServiceTypeController {
                     "success",
                     ResultCode.OK.getHttpCode()
             );
-    /*    } catch (NotFoundException exception) {
+        } catch (NotFoundException exception) {
             return new ResponseMessageAPI<>(
                     null,
                     ResultCodeAPI.FAIL,
                     exception.getClass().getSimpleName(),
                     exception.getMessage(),
                     ResultCode.NOT_FOUND.getHttpCode()
-            );*/
+            );
         } catch (Exception e) {
             return new ResponseMessageAPI<>(
                     null,
@@ -116,15 +117,15 @@ public class ServiceTypeController {
                     null,
                     "success",
                     ResultCode.OK.getHttpCode());
-        }  /*    } catch (NotFoundException exception) {
+        } catch (NotFoundException exception) {
             return new ResponseMessageAPI<>(
                     null,
                     ResultCodeAPI.FAIL,
                     exception.getClass().getSimpleName(),
                     exception.getMessage(),
                     ResultCode.NOT_FOUND.getHttpCode()
-            );*/
-        catch (Exception e) {
+            );
+        } catch (Exception e) {
             return new ResponseMessageAPI<>(
                     null,
                     ResultCodeAPI.EXCEPTION,
@@ -156,15 +157,15 @@ public class ServiceTypeController {
                         null,
                         "success",
                         ResultCode.OK.getHttpCode());
-            } /*    } catch (NotFoundException exception) {
-            return new ResponseMessageAPI<>(
-                    null,
-                    ResultCodeAPI.FAIL,
-                    exception.getClass().getSimpleName(),
-                    exception.getMessage(),
-                    ResultCode.NOT_FOUND.getHttpCode()
-            );*/
-            catch (Exception e) {
+            } catch (NotFoundException exception) {
+                return new ResponseMessageAPI<>(
+                        null,
+                        ResultCodeAPI.FAIL,
+                        exception.getClass().getSimpleName(),
+                        exception.getMessage(),
+                        ResultCode.NOT_FOUND.getHttpCode()
+                );
+            } catch (Exception e) {
                 return new ResponseMessageAPI<>(
                         null,
                         ResultCodeAPI.EXCEPTION,
@@ -196,15 +197,15 @@ public class ServiceTypeController {
                         null,
                         "success",
                         ResultCode.OK.getHttpCode());
-            } /*    } catch (NotFoundException exception) {
-            return new ResponseMessageAPI<>(
-                    null,
-                    ResultCodeAPI.FAIL,
-                    exception.getClass().getSimpleName(),
-                    exception.getMessage(),
-                    ResultCode.NOT_FOUND.getHttpCode()
-            );*/
-            catch (Exception e) {
+            } catch (NotFoundException exception) {
+                return new ResponseMessageAPI<>(
+                        null,
+                        ResultCodeAPI.FAIL,
+                        exception.getClass().getSimpleName(),
+                        exception.getMessage(),
+                        ResultCode.NOT_FOUND.getHttpCode()
+                );
+            } catch (Exception e) {
                 return new ResponseMessageAPI<>(
                         null,
                         ResultCodeAPI.EXCEPTION,

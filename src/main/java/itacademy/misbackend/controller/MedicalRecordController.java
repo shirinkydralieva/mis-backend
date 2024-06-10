@@ -6,22 +6,25 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import itacademy.misbackend.dto.MedicalRecordDto;
+import itacademy.misbackend.dto.ResponseMessageAPI;
+import itacademy.misbackend.enums.ResultCode;
+import itacademy.misbackend.enums.ResultCodeAPI;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.service.MedicalRecordService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Medical Records", description = "Тут находятся все роуты связанные с мед записями приема")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/medicalRecords")
 public class MedicalRecordController {
     private final MedicalRecordService service;
 
-
+//Обработка ошибок
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
@@ -33,14 +36,24 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут для создание мед записей.")
     @PostMapping
-    public ResponseEntity<MedicalRecordDto> create(@RequestBody MedicalRecordDto recordDto) {
-      //  try {
-            return new ResponseEntity<>(service.create(recordDto),HttpStatus.CREATED);
-    //    } catch (NullPointerException e) {
-     //       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-     //   } catch (Exception e) {
-     //       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+    public ResponseMessageAPI<MedicalRecordDto> create(@RequestBody MedicalRecordDto recordDto) {
+        try {
+            return new ResponseMessageAPI<>(
+                    service.create(recordDto),
+                    ResultCodeAPI.CREATED,
+                    null,
+                    "success",
+                    ResultCode.CREATED.getHttpCode()
+            );
+        } catch (Exception e) {
+            return new ResponseMessageAPI<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    e.getClass().getSimpleName(),
+                    "Ошибка сервера",
+                    ResultCode.FAIL.getHttpCode()
+            );
+        }
     }
 
     @ApiResponses(value = {
@@ -57,14 +70,14 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут для поиска мед записей по id.")
     @GetMapping("/{id}")
-    public ResponseEntity<MedicalRecordDto> getById(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<>(service.getById(id),HttpStatus.OK);
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseMessageAPI<MedicalRecordDto> getById(@PathVariable Long id) {
+            return new ResponseMessageAPI<>(
+                    service.getById(id),
+                    ResultCodeAPI.CREATED,
+                    null,
+                    "success",
+                    ResultCode.CREATED.getHttpCode()
+            );
     }
 
     @ApiResponses(value = {
@@ -82,26 +95,57 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут возвращает все доступные мед записи")
     @GetMapping()
-    public ResponseEntity<List<MedicalRecordDto>> getAll() {
-        try {
-            return new ResponseEntity<>(service.getAll(),HttpStatus.OK);
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseMessageAPI<List<MedicalRecordDto>> getAll() {
+            try {
+                return new ResponseMessageAPI<>(
+                        service.getAll(),
+                        ResultCodeAPI.SUCCESS,
+                        null,
+                        "Все доступные мед записи успешно получены",
+                        ResultCode.OK.getHttpCode()
+                );
+            } catch (NotFoundException exception) {
+                return new ResponseMessageAPI<>(
+                        null,
+                        ResultCodeAPI.FAIL,
+                        exception.getClass().getSimpleName(),
+                        exception.getMessage(),
+                        ResultCode.NOT_FOUND.getHttpCode()
+                );
+            } catch (Exception e) {
+                return new ResponseMessageAPI<>(
+                        null,
+                        ResultCodeAPI.EXCEPTION,
+                        e.getClass().getSimpleName(),
+                        "Ошибка сервера",
+                        ResultCode.FAIL.getHttpCode()
+                );
+            }
     }
 
-    
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Мед запись успешно обновлена",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedicalRecordDto.class))}),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Мед запись не найдена"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Не удалось обновить мед запись.")
+    })
+    @Operation(summary = "Этот роут выполняет поиск мед записи по id и обновляет")
     @PutMapping("/update/{id}")
-    public ResponseEntity<MedicalRecordDto> update(@PathVariable Long id, @RequestBody MedicalRecordDto recordDto) {
-     //   try {
-            return new ResponseEntity<>(service.update(id, recordDto),HttpStatus.OK);
-     /*   } catch (NullPointerException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }*/
+    public ResponseMessageAPI<MedicalRecordDto> update(@PathVariable Long id, @RequestBody MedicalRecordDto recordDto) {
+        return new ResponseMessageAPI<>(
+                service.update(id, recordDto),
+                ResultCodeAPI.SUCCESS,
+                null,
+                "success",
+                ResultCode.OK.getHttpCode()
+        );
     }
 
     @ApiResponses(value = {
@@ -119,14 +163,14 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут удаляет мед запись по id")
     @PutMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseMessageAPI<String> delete(@PathVariable Long id) {
+            return new ResponseMessageAPI<>(
+                    service.delete(id),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "success",
+                    ResultCode.OK.getHttpCode()
+            );
     }
 
 }

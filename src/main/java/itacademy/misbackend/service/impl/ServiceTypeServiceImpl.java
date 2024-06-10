@@ -2,6 +2,7 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.ServiceTypeDto;
 import itacademy.misbackend.entity.ServiceType;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.repo.DepartmentRepo;
 import itacademy.misbackend.repo.ServiceTypeRepo;
 import itacademy.misbackend.service.ServiceTypeService;
@@ -43,7 +44,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         ServiceType serviceType = repo.findByDeletedAtIsNullAndId(id);
         if (serviceType == null) {
             log.error("Услуга с id " + id + " не найдена!");
-            throw new NullPointerException("Услуга не найдена!");
+            throw new NotFoundException("Услуга не найдена!");
         }
         log.info("КОНЕЦ: ServiceTypeServiceImpl - getById(). Услуга - {} ", serviceType);
         return ServiceTypeDto.builder()
@@ -61,7 +62,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         List<ServiceType> services = repo.findAllByDeletedAtIsNull();
         if (services.isEmpty()) {
             log.error("Услуг нет!");
-            throw new NullPointerException("Список услуг пуст!");
+            throw new NotFoundException("Список услуг пуст!");
         }
         var dtoList = new ArrayList<ServiceTypeDto>();
         for (ServiceType serviceType : services) {
@@ -85,7 +86,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 
         if (serviceType == null) {
             log.error("Услуга с id " + id + " не найдена!");
-            throw new NullPointerException("Услуга не найдена!");
+            throw new NotFoundException("Услуга не найдена!");
         }
         log.info("Услуга найдена. Исходные данные - {}", serviceType);
         serviceType.setName(updateDto.getName());
@@ -111,7 +112,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         ServiceType serviceType = repo.findByDeletedAtIsNullAndId(id);
         if (serviceType == null) {
             log.error("Услуга с id " + id + " не найдена!");
-            throw new NullPointerException("Услуга не найдена!");
+            throw new NotFoundException("Услуга не найдена!");
         }
         serviceType.setDeletedAt(LocalDateTime.now());
         repo.save(serviceType);

@@ -1,8 +1,6 @@
 package itacademy.misbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import itacademy.misbackend.entity.helper.Diagnosis;
-import itacademy.misbackend.entity.helper.Prescription;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +31,8 @@ public class MedicalRecord {
     @JoinColumn(name = "med_card_id")
     private MedCard medCard;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private Diagnosis diagnosis;
-    @OneToOne(fetch = FetchType.EAGER)
-    private Prescription prescription;
-
+    private String diagnosis;
+    private String prescription;
     private String notes;
     private String recommendation;
 
