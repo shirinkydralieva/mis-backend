@@ -1,57 +1,68 @@
 package itacademy.misbackend.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import itacademy.misbackend.dto.AppointmentDto;
+import itacademy.misbackend.dto.ResponseMessageAPI;
+import itacademy.misbackend.enums.ResultCode;
+import itacademy.misbackend.enums.ResultCodeAPI;
 import itacademy.misbackend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@Tag(name = "Appointments", description = "Тут находятся все роуты связанные с записями приема")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
     @PostMapping()
-    public ResponseEntity<AppointmentDto> create (@RequestBody AppointmentDto appointmentDto) {
-        AppointmentDto createdAppointment = appointmentService.create(appointmentDto);
-        if (createdAppointment == null) {
-            return ResponseEntity.badRequest().build();
-            //Временная мера, пока не реализована обработка ошибок
-        }
-        return ResponseEntity.ok(createdAppointment);
+    public ResponseMessageAPI<AppointmentDto> create (@RequestBody AppointmentDto appointmentDto) {
+        return new ResponseMessageAPI<>(
+                appointmentService.create(appointmentDto),
+                ResultCodeAPI.CREATED,
+                null,
+                "success",
+                ResultCode.CREATED.getHttpCode());
     }
 
     @GetMapping()
-    public ResponseEntity<List<AppointmentDto>> getAll () {
-        var appointments = appointmentService.getAll();
-        return ResponseEntity.ok(appointments);
+    public ResponseMessageAPI<List<AppointmentDto>> getAll () {
+        return new ResponseMessageAPI<>(
+                appointmentService.getAll(),
+                ResultCodeAPI.SUCCESS,
+                null,
+                "Список всех доступных приемов получен",
+                ResultCode.OK.getHttpCode());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentDto> getById (@PathVariable Long id) {
-        AppointmentDto appointment = appointmentService.getById(id);
-        if (appointment == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(appointment);
+    public ResponseMessageAPI<AppointmentDto> getById (@PathVariable Long id) {
+        return new ResponseMessageAPI<>(
+                appointmentService.getById(id),
+                ResultCodeAPI.SUCCESS,
+                null,
+                "Запись приема успешно найден",
+                ResultCode.OK.getHttpCode());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentDto> update (@PathVariable Long id, @RequestBody AppointmentDto appointmentDto) {
-        AppointmentDto updatedAppointment = appointmentService.update(id, appointmentDto);
-        if (updatedAppointment == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedAppointment);
+    public ResponseMessageAPI<AppointmentDto> update (@PathVariable Long id, @RequestBody AppointmentDto appointmentDto) {
+        return new ResponseMessageAPI<>(
+                appointmentService.update(id, appointmentDto),
+                ResultCodeAPI.SUCCESS,
+                null,
+                "Запись приема успешно обновлен",
+                ResultCode.OK.getHttpCode());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete (@PathVariable Long id) {
-        String result = appointmentService.delete(id);
-        if (result == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(result);
+    public ResponseMessageAPI<String> delete (@PathVariable Long id) {
+        return new ResponseMessageAPI<>(
+                appointmentService.delete(id),
+                ResultCodeAPI.SUCCESS,
+                null,
+                "Запись приема успешно удален",
+                ResultCode.OK.getHttpCode());
     }
 }

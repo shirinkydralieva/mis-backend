@@ -1,7 +1,5 @@
 package itacademy.misbackend.dto;
 
-import itacademy.misbackend.entity.helper.Diagnosis;
-import itacademy.misbackend.entity.helper.Prescription;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +17,8 @@ public class MedicalRecordDto {
     private Long appointmentId;
     private Long medCardId;
 
-    private Diagnosis diagnosis;
-    private Prescription prescription;
-
+    private String diagnosis;
+    private String prescription;
     private String notes;
     private String recommendation;
 
