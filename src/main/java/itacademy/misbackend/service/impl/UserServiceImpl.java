@@ -51,13 +51,41 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
     @Override
-    public UserDto create(UserDto userDto) {
+    public UserDto save(UserDto userDto) {
         log.info("СТАРТ: UserServiceImpl - create() {}", userDto);
-        //userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User user = userMapper.toEntity(userDto);
         user = userRepo.save(user);
         log.info("КОНЕЦ: UserServiceImpl - create {} ", userMapper.toDto(user));
         return userMapper.toDto(user);
+    }
+
+    @Transactional
+    @Override
+    public UserDoctorRequest createDoctor(UserDoctorRequest userDoctorRequest) {
+        UserDto user = save(userDoctorRequest.getUser());
+        addRole(user.getId(), "DOCTOR");
+        DoctorDto doctor = userDoctorRequest.getDoctor();
+        doctor.setUserId(user.getId());
+        doctor = doctorService.save(doctor);
+        userDoctorRequest.getUser().setId(user.getId());
+        userDoctorRequest.getUser().setPassword(null);
+        userDoctorRequest.getDoctor().setId(doctor.getId());
+        return userDoctorRequest;
+    }
+
+    @Transactional
+    @Override
+    public UserPatientRequest createPatient(UserPatientRequest userPatientRequest) {
+        UserDto user = save(userPatientRequest.getUser());
+        addRole(user.getId(), "PATIENT");
+        PatientDto patient = userPatientRequest.getPatient();
+        patient.setUserId(user.getId());
+        patient = patientService.create(patient);
+        userPatientRequest.getUser().setId(user.getId());
+        userPatientRequest.getUser().setPassword(null);
+        userPatientRequest.getPatient().setId(patient.getId());
+        return userPatientRequest;
     }
 
     @Override

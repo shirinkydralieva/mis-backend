@@ -2,7 +2,6 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.RegistrationMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl {
     private final JavaMailSender mailSender;
 
-    @RabbitListener(queues = "email_queue")
+//    @RabbitListener(queues = "email_queue")
     public void handleMessage(RegistrationMessage message) {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(message.getEmail());
