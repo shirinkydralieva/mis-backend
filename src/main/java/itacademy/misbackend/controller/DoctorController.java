@@ -1,6 +1,7 @@
 package itacademy.misbackend.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.dto.DoctorDto;
 import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.enums.ResultCode;
