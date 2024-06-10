@@ -29,8 +29,10 @@ public class PatientMapperImpl implements PatientMapper {
                 .taxId(patient.getTaxId())
                 .address(addressMapper.toDto(patient.getAddress()))
                 .placeOfWork(patient.getPlaceOfWork())
-                .userId(patient.getUser().getId())
                 .build();
+        if (patient.getUser() != null) {
+            dto.setUserId(patient.getUser().getId());
+        }
         if (patient.getAppointments() != null) {
             dto.setAppointments(new AppointmentMapperImpl().toDtoList(patient.getAppointments()));
         }

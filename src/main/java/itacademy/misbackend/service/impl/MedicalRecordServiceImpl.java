@@ -2,112 +2,110 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.MedicalRecordDto;
 import itacademy.misbackend.entity.MedicalRecord;
-import itacademy.misbackend.mapper.AppointmentMapper;
-import itacademy.misbackend.repo.MedicalRecordRepo;
+import itacademy.misbackend.mapper.MedicalRecordMapper;
+import itacademy.misbackend.repo.*;
 import itacademy.misbackend.service.MedicalRecordService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class MedicalRecordServiceImpl implements MedicalRecordService {
-      private MedicalRecordRepo repo;
-      private AppointmentMapper mapper;
-    @Override
+      private final MedicalRecordRepo repo;
+      private final MedicalRecordMapper mapper;
+      private final AppointmentRepo appointmentRepo;
+      private final MedCardRepo medCardRepo;
+
+    //@Transactional
+      @Override
     public MedicalRecordDto create(MedicalRecordDto recordDto) {
-     /*   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-*/
-        MedicalRecord record = MedicalRecord.builder()
-                .summary(recordDto.getSummary())
-                .notes(recordDto.getNotes())
-              //  .appointments()
-                .createdAt(new Timestamp(System.currentTimeMillis()))
-             //   .createdBy(username)
-                .lastUpdatedAt(new Timestamp(System.currentTimeMillis()))
-             //   .lastUpdatedBy(username)
-                .build();
+        log.info("СТАРТ: MedicalRecordServiceImpl - create() {}", recordDto);
+     //   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        MedicalRecord record = mapper.toEntity(recordDto);
+        record.setAppointment(appointmentRepo
+                .findByDeletedAtIsNullAndDeletedByIsNullAndId(
+                        recordDto.getAppointmentId() ) );
+        record.setMedCard(medCardRepo.findByDeletedAtIsNullAndId(
+                record.getAppointment().getPatient().getId()));
+        record.setCreatedAt(LocalDateTime.now());
+    //    record.setCreatedBy(authentication.getName());
+        record.setLastUpdatedAt(LocalDateTime.now());
+     //   record.setLastUpdatedBy(authentication.getName());
 
         repo.save(record);
-
-        recordDto.setCreatedAt(record.getCreatedAt());
-        recordDto.setLastUpdatedAt(record.getLastUpdatedAt());
-
-        return recordDto;
+        log.info("КОНЕЦ: MedicalRecordServiceImpl - create {} ", record);
+        return mapper.toDto(record);
     }
 
     @Override
     public MedicalRecordDto getById(Long id) {
+        log.info("СТАРТ: MedicalRecordServiceImpl - getById({})", id);
         MedicalRecord record = repo.findByDeletedAtIsNullAndId(id);
         if (record == null) {
-            throw new NullPointerException("Медицинская запись с id " + id + " не найдена!");
+            log.error("Медицинская запись с id " + id + " не найдена!");
+            throw new NullPointerException("Медицинская запись не найдена!");
         }
-        return   MedicalRecordDto.builder()
-                .id(record.getId())
-                .summary(record.getSummary())
-                .notes(record.getNotes())
-                .appointments(mapper.toDtoList(record.getAppointments()))
-                .createdAt(record.getCreatedAt())
-                .createdBy(record.getCreatedBy())
-                .lastUpdatedAt(record.getLastUpdatedAt())
-                .lastUpdatedBy(record.getLastUpdatedBy())
-                .build();
+        log.info("КОНЕЦ: MedicalRecordServiceImpl - getById(). Медицинская запись - {} ", record);
+        return  mapper.toDto(record);
     }
 
     @Override
     public List<MedicalRecordDto> getAll() {
-        List<MedicalRecord> recordList = repo.findAllByDeletedAtIsNull();
-        if (recordList.isEmpty()) {
+        log.info("СТАРТ: MedicalRecordServiceImpl - getAll()");
+        List<MedicalRecord> records = repo.findAllByDeletedAtIsNull();
+        if (records.isEmpty()) {
+            log.error("Записей нет!");
             throw new NullPointerException("Записей нет!");
         }
-        List<MedicalRecordDto> recordDtoList = new ArrayList<>();
-        for (MedicalRecord record : recordList) {
-            MedicalRecordDto recordDto = MedicalRecordDto.builder()
-                    .id(record.getId())
-                    .summary(record.getSummary())
-                    .notes(record.getNotes())
-                    .appointments(mapper.toDtoList(record.getAppointments()))
-                    .createdAt(record.getCreatedAt())
-                    .createdBy(record.getCreatedBy())
-                    .lastUpdatedAt(record.getLastUpdatedAt())
-                    .lastUpdatedBy(record.getLastUpdatedBy())
-                    .build();
-            recordDtoList.add(recordDto);
-        }
-        return recordDtoList;
+        log.info("КОНЕЦ: MedicalRecordServiceImpl - getAll()");
+        return mapper.toDtoList(records);
     }
 
     @Override
-    public MedicalRecordDto update(Long id, MedicalRecordDto dto) {
-        MedicalRecord record = repo.findByDeletedAtIsNullAndId(id);
-            if (record == null) {
-                throw new NullPointerException("Медицинская запись с id " + id + " не найдена!");
-            }
-        record.setNotes(dto.getNotes());
-        record.setSummary(dto.getSummary());
-        record.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
-       // record.setLastUpdatedBy(username);
+    public MedicalRecordDto update(Long id, MedicalRecordDto updateDto) {
+        log.info("СТАРТ: MedicalRecordServiceImpl - update(). Мед запись с id {}", id);
 
-        repo.save(record);
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        dto.setLastUpdatedAt(record.getLastUpdatedAt());
-        dto.setLastUpdatedBy(record.getLastUpdatedBy());
-
-        return dto;
-    }
-
-
-    @Override
-    public String delete(Long id) {
         MedicalRecord record = repo.findByDeletedAtIsNullAndId(id);
         if (record == null) {
-            throw new NullPointerException("Медицинская запись с id " + id + " не найдена!");
+            log.error("Медицинская запись с id " + id + " не найдена!");
+            throw new NullPointerException("Медицинская запись не найдена!");
         }
-        record.setDeletedAt(new Timestamp(System.currentTimeMillis()));
-      //  record.setDeletedBy(username);
+        log.info("Запись найдена. Исходные данные - {}", record);
 
+        record.setDiagnosis(updateDto.getDiagnosis());
+        record.setPrescription(updateDto.getPrescription());
+        record.setNotes(updateDto.getNotes());
+        record.setRecommendation(updateDto.getRecommendation());
+        record.setLastUpdatedAt(LocalDateTime.now());
+       // record.setLastUpdatedBy(authentication.getName());
+        repo.save(record);
+        log.info("КОНЕЦ: MedicalRecordServiceImpl - update(). Обновленная запись - {}", mapper.toDto(record));
+        return mapper.toDto(record);
+    }
+    //@Transactional
+    @Override
+    public String delete(Long id) {
+        log.info("СТАРТ: MedicalRecordServiceImpl - delete(). Мед запись с id {}", id);
+        //   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        MedicalRecord record = repo.findByDeletedAtIsNullAndId(id);
+        if (record == null) {
+            log.error("Медицинская запись с id " + id + " не найдена!");
+            throw new NullPointerException("Медицинская запись не найдена!");
+        }
+
+        record.setDeletedAt(LocalDateTime.now());
+      //  record.setDeletedBy(authentication.getName());
+        repo.save(record);
+        log.info("КОНЕЦ: ServiceTypeServiceImpl - delete(). Мед запись (id {}) удалена", id);
         return "Медицинская запись удалена";
     }
 }

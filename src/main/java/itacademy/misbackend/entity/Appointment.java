@@ -1,5 +1,6 @@
 package itacademy.misbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,22 +22,18 @@ public class Appointment {
     private Long id;
     private String reason;
     private String status;
-    private String notes;
     private LocalDateTime appointmentDate;
-
-  //  private Diagnosis diagnosis;
-   // private Prescription prescription;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "medical_record_id")
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     private MedicalRecord medicalRecord;
 
     private LocalDateTime deletedAt;
@@ -45,7 +42,7 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment [id=" + id
-                + ", doctorId="
-                + doctor.getId() + "]";
+                + ", doctorId=" + doctor.getId()
+                + ", patientId=" + patient.getId()+ "]";
     }
 }

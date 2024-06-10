@@ -1,6 +1,8 @@
 package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.*;
+import itacademy.misbackend.dto.UserDto;
+import itacademy.misbackend.entity.MedicalRecord;
 import itacademy.misbackend.entity.User;
 import itacademy.misbackend.entity.helper.Role;
 import itacademy.misbackend.exception.NotFoundException;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,6 +30,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final UserMapper userMapper;
@@ -47,61 +51,37 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
     @Override
-    public UserDto save(UserDto userDto) {
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    public UserDto create(UserDto userDto) {
+        log.info("СТАРТ: UserServiceImpl - create() {}", userDto);
+        //userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User user = userMapper.toEntity(userDto);
-        String token = UUID.randomUUID().toString();
-        var roles = new HashSet<Role>();
-
-        user.setRoles(roles);
         user = userRepo.save(user);
+        log.info("КОНЕЦ: UserServiceImpl - create {} ", userMapper.toDto(user));
         return userMapper.toDto(user);
-    }
-
-    @Transactional
-    @Override
-    public UserDoctorRequest createDoctor(UserDoctorRequest userDoctorRequest) {
-        UserDto user = save(userDoctorRequest.getUser());
-        addRole(user.getId(), "DOCTOR");
-        DoctorDto doctor = userDoctorRequest.getDoctor();
-        doctor.setUserId(user.getId());
-        doctor = doctorService.save(doctor);
-        userDoctorRequest.getUser().setId(user.getId());
-        userDoctorRequest.getUser().setPassword(null);
-        userDoctorRequest.getDoctor().setId(doctor.getId());
-        return userDoctorRequest;
-    }
-
-    @Transactional
-    @Override
-    public UserPatientRequest createPatient(UserPatientRequest userPatientRequest) {
-        UserDto user = save(userPatientRequest.getUser());
-        addRole(user.getId(), "PATIENT");
-        PatientDto patient = userPatientRequest.getPatient();
-        patient.setUserId(user.getId());
-        patient = patientService.create(patient);
-        userPatientRequest.getUser().setId(user.getId());
-        userPatientRequest.getUser().setPassword(null);
-        userPatientRequest.getPatient().setId(patient.getId());
-        return userPatientRequest;
     }
 
     @Override
     public UserDto getById(Long id) {
+        log.info("СТАРТ: UserServiceImpl - getById({})", id);
         User user = userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
         if (user == null) {
-            throw new NotFoundException("Пользователь с id " + id + " не найден");
+            log.error("Пользователь с id " + id + " не найден!");
+            throw new NullPointerException("Пользователь не найден!");
         }
+        log.info("КОНЕЦ: UserServiceImpl - getById(). Пользователь - {} ", userMapper.toDto(user));
         return userMapper.toDto(user);
     }
 
     @Override
     public List<UserDto> getAll() {
-        if (userRepo.findAllByDeletedAtIsNullAndDeletedByIsNull().isEmpty()) {
-            throw new NotFoundException("Пользователи не найдены");
-        } else {
-            return userMapper.toDtoList(userRepo.findAllByDeletedAtIsNullAndDeletedByIsNull());
+        log.info("СТАРТ: UserServiceImpl - getAll()");
+        var users = userRepo.findAllByDeletedAtIsNullAndDeletedByIsNull();
+        if (users.isEmpty()) {
+            log.error("Пользователей нет!");
+            throw new NullPointerException("Пользователей нет!");
         }
+        log.info("КОНЕЦ: MedicalRecordServiceImpl - getAll()");
+        return userMapper.toDtoList(users);
     }
 
     @Override

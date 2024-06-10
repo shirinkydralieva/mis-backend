@@ -14,10 +14,10 @@ public class AppointmentDto {
     private Long id;
     private String reason;
     private String status;
-    private String notes;
     private LocalDateTime appointmentDate;
     private Long doctorId;
     private Long patientId;
+    private Long medicalRecordId;
 
     private LocalDateTime deletedAt;
     private String deletedBy;

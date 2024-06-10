@@ -1,29 +1,23 @@
 package itacademy.misbackend.dto;
 
+
+import itacademy.misbackend.entity.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MedicalRecordDto {
+public class MedCardDto {
     private Long id;
-
-    private Long appointmentId;
-    private Long medCardId;
-
-    private String diagnosis;
-    private String prescription;
-    private String notes;
-    private String recommendation;
-
-    private String createdBy;
-    private LocalDateTime createdAt;
+    private Patient patient;
+    private List<MedicalRecordDto> medicalRecords;
 
     private String lastUpdatedBy;
     private LocalDateTime lastUpdatedAt;

@@ -1,5 +1,6 @@
 package itacademy.misbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import itacademy.misbackend.entity.helper.Department;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -34,7 +34,8 @@ public class Doctor {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
 
     private LocalDateTime deletedAt;
@@ -43,6 +44,7 @@ public class Doctor {
     @Override
     public String toString() {
         return "Doctor [id=" + id
+                + ", department=" + department.getName()
                 + ", appointments=" + appointments.stream().map(Appointment::getId).toList()
                 + "]";
     }

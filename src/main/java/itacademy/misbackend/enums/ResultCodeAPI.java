@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum ResultCodeAPI {
+    CREATED ("CREATED"),
     SUCCESS("SUCCESS"),
     FAIL("FAIL"),
     EXCEPTION("EXCEPTION"),

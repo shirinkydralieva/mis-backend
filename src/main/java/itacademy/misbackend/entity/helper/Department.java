@@ -1,6 +1,8 @@
 package itacademy.misbackend.entity.helper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import itacademy.misbackend.entity.Doctor;
+import itacademy.misbackend.entity.ServiceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,9 +26,16 @@ public class Department {
     @Column(unique = true)
     private String name;
     private String description;
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "department")
+    private List<ServiceType> services;
 
     private LocalDateTime deletedAt;
     private String deletedBy;
+
 }
