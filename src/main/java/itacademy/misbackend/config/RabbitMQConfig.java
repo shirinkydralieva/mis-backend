@@ -1,14 +1,9 @@
 package itacademy.misbackend.config;
 
-import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+import org.springframework.beans.factory.annotation.Value;
+
+//@Configuration
 public class RabbitMQConfig {
     @Value("${rabbitmq.queue.email.name}")
     private String emailQueue;
@@ -19,7 +14,7 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.binding.email.name}")
     private String emailRoutingKey;
 
-    @Bean
+    /*@Bean
     public Queue emailQueue() {
         return new Queue(emailQueue);
     }
@@ -47,4 +42,5 @@ public class RabbitMQConfig {
     public Jackson2JsonMessageConverter converter() {
         return new Jackson2JsonMessageConverter();
     }
+     */
 }

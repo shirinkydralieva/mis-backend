@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,8 +54,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     @Override
     public UserDto save(UserDto userDto) {
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         log.info("СТАРТ: UserServiceImpl - create() {}", userDto);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User user = userMapper.toEntity(userDto);
         String token = UUID.randomUUID().toString();
         var roles = new HashSet<Role>();
