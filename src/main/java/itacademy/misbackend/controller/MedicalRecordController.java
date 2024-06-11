@@ -71,6 +71,7 @@ public class MedicalRecordController {
     @Operation(summary = "Этот роут для поиска мед записей по id.")
     @GetMapping("/{id}")
     public CustomResponseMessage<MedicalRecordDto> getById(@PathVariable Long id) {
+        try {
             return new CustomResponseMessage<>(
                     service.getById(id),
                     ResultCodeAPI.CREATED,
@@ -78,6 +79,23 @@ public class MedicalRecordController {
                     "success",
                     ResultCode.CREATED
             );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
     @ApiResponses(value = {
@@ -139,13 +157,31 @@ public class MedicalRecordController {
     @Operation(summary = "Этот роут выполняет поиск мед записи по id и обновляет")
     @PutMapping("/update/{id}")
     public CustomResponseMessage<MedicalRecordDto> update(@PathVariable Long id, @RequestBody MedicalRecordDto recordDto) {
-        return new CustomResponseMessage<>(
-                service.update(id, recordDto),
-                ResultCodeAPI.SUCCESS,
-                null,
-                "success",
-                ResultCode.OK
-        );
+        try {
+            return new CustomResponseMessage<>(
+                    service.update(id, recordDto),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "success",
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
     @ApiResponses(value = {
@@ -164,6 +200,7 @@ public class MedicalRecordController {
     @Operation(summary = "Этот роут удаляет мед запись по id")
     @PutMapping("/delete/{id}")
     public CustomResponseMessage<String> delete(@PathVariable Long id) {
+        try {
             return new CustomResponseMessage<>(
                     service.delete(id),
                     ResultCodeAPI.SUCCESS,
@@ -171,6 +208,23 @@ public class MedicalRecordController {
                     "success",
                     ResultCode.OK
             );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
 }

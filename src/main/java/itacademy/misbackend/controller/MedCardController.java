@@ -12,6 +12,7 @@ import itacademy.misbackend.dto.MedCardDto;
 import itacademy.misbackend.dto.MedicalRecordDto;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.service.MedCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -41,13 +42,31 @@ public class MedCardController {
     @Operation(summary = "Этот роут возвращает все доступные мед карты")
     @GetMapping()
     public CustomResponseMessage<List<MedCardDto>> getAll() {
-        return new CustomResponseMessage<>(
-                service.getAll(),
-                ResultCodeAPI.SUCCESS,
-                null,
-                "Все доступные мед карты успешно получены",
-                ResultCode.OK
-        );
+        try {
+            return new CustomResponseMessage<>(
+                    service.getAll(),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "Все доступные мед карты успешно получены",
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
     @ApiResponses(value = {
             @ApiResponse(
@@ -64,13 +83,31 @@ public class MedCardController {
     @Operation(summary = "Этот роут для поиска мед карт по id.")
     @GetMapping("/{id}")
     public CustomResponseMessage<MedCardDto> getById(@PathVariable Long id) {
-        return new CustomResponseMessage<>(
-                service.getById(id),
-                ResultCodeAPI.SUCCESS,
-                null,
-                "Мед карта по id успешно найдена.",
-                ResultCode.OK
-        );
+        try {
+            return new CustomResponseMessage<>(
+                    service.getById(id),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "Мед карта по id успешно найдена.",
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
     @ApiResponses(value = {
             @ApiResponse(
@@ -87,13 +124,31 @@ public class MedCardController {
     @Operation(summary = "Этот роут для удаления мед карт по id.")
     @PutMapping("/delete")
     public CustomResponseMessage<String> delete(@RequestParam Long id) {
-        return new CustomResponseMessage<>(
-                service.delete(id),
-                ResultCodeAPI.SUCCESS,
-                null,
-                "Мед карта успешно удалена.",
-                ResultCode.OK
-        );
+        try {
+            return new CustomResponseMessage<>(
+                    service.delete(id),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "Мед карта успешно удалена.",
+                    ResultCode.OK
+            );
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 
 }

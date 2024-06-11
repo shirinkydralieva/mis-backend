@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.dto.DoctorDto;
-import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
 import itacademy.misbackend.service.DoctorService;

@@ -33,12 +33,30 @@ public class PatientController {
     @Operation(summary = "Этот роут для добавления пациентов.")
     @PostMapping()
     public CustomResponseMessage<PatientDto> create (@RequestBody PatientDto patientDto) {
-        return new CustomResponseMessage<>(
-                patientService.create(patientDto),
-                ResultCodeAPI.CREATED,
-                null,
-                "success",
-                ResultCode.CREATED);
+        try {
+            return new CustomResponseMessage<>(
+                    patientService.create(patientDto),
+                    ResultCodeAPI.CREATED,
+                    null,
+                    "success",
+                    ResultCode.CREATED);
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
     @ApiResponses(value = {
             @ApiResponse(
@@ -55,12 +73,30 @@ public class PatientController {
     @Operation(summary = "Этот роут возвращает все доступных пациентов.")
     @GetMapping()
     public CustomResponseMessage<List<PatientDto>> getAll () {
+        try {
             return new CustomResponseMessage<>(
                     patientService.getAll(),
                     ResultCodeAPI.SUCCESS,
                     null,
                     "Список всех доступных пациентов получен",
                     ResultCode.OK);
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
         }
 
     @ApiResponses(value = {
@@ -116,12 +152,30 @@ public class PatientController {
     @Operation(summary = "Этот роут для обновления пациентов по id.")
     @PutMapping("/{id}")
     public CustomResponseMessage<PatientDto> update (@PathVariable Long id, @RequestBody PatientDto patientDto) {
-        return new CustomResponseMessage<>(
-                patientService.update(id, patientDto),
-                ResultCodeAPI.SUCCESS,
-                null,
-                "Пациент успешно обновлен",
-                ResultCode.OK);
+        try {
+            return new CustomResponseMessage<>(
+                    patientService.update(id, patientDto),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "Пациент успешно обновлен",
+                    ResultCode.OK);
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
     @ApiResponses(value = {
             @ApiResponse(
@@ -138,11 +192,29 @@ public class PatientController {
     @Operation(summary = "Этот роут для удаления пациентов по id.")
     @DeleteMapping("/{id}")
     public CustomResponseMessage<String> delete (@PathVariable Long id) {
-        return new CustomResponseMessage<>(
-                patientService.delete(id),
-                ResultCodeAPI.SUCCESS,
-                null,
-                "Пациент успешно удален",
-                ResultCode.OK);
+        try {
+            return new CustomResponseMessage<>(
+                    patientService.delete(id),
+                    ResultCodeAPI.SUCCESS,
+                    null,
+                    "Пациент успешно удален",
+                    ResultCode.OK);
+        } catch (NotFoundException e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.FAIL,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.NOT_FOUND
+            );
+        } catch (Exception e) {
+            return new CustomResponseMessage<>(
+                    null,
+                    ResultCodeAPI.EXCEPTION,
+                    "Ошибка",
+                    e.getMessage(),
+                    ResultCode.FAIL
+            );
+        }
     }
 }
