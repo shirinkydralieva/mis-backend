@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import itacademy.misbackend.dto.CustomResponseMessage;
 import itacademy.misbackend.dto.MedicalRecordDto;
-import itacademy.misbackend.dto.ResponseMessageAPI;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
 import itacademy.misbackend.exception.NotFoundException;
@@ -36,22 +36,22 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут для создание мед записей.")
     @PostMapping
-    public ResponseMessageAPI<MedicalRecordDto> create(@RequestBody MedicalRecordDto recordDto) {
+    public CustomResponseMessage<MedicalRecordDto> create(@RequestBody MedicalRecordDto recordDto) {
         try {
-            return new ResponseMessageAPI<>(
+            return new CustomResponseMessage<>(
                     service.create(recordDto),
                     ResultCodeAPI.CREATED,
                     null,
                     "success",
-                    ResultCode.CREATED.getHttpCode()
+                    ResultCode.CREATED
             );
         } catch (Exception e) {
-            return new ResponseMessageAPI<>(
+            return new CustomResponseMessage<>(
                     null,
                     ResultCodeAPI.EXCEPTION,
                     e.getClass().getSimpleName(),
                     "Ошибка сервера",
-                    ResultCode.FAIL.getHttpCode()
+                    ResultCode.FAIL
             );
         }
     }
@@ -70,13 +70,13 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут для поиска мед записей по id.")
     @GetMapping("/{id}")
-    public ResponseMessageAPI<MedicalRecordDto> getById(@PathVariable Long id) {
-            return new ResponseMessageAPI<>(
+    public CustomResponseMessage<MedicalRecordDto> getById(@PathVariable Long id) {
+            return new CustomResponseMessage<>(
                     service.getById(id),
                     ResultCodeAPI.CREATED,
                     null,
                     "success",
-                    ResultCode.CREATED.getHttpCode()
+                    ResultCode.CREATED
             );
     }
 
@@ -95,30 +95,30 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут возвращает все доступные мед записи")
     @GetMapping()
-    public ResponseMessageAPI<List<MedicalRecordDto>> getAll() {
+    public CustomResponseMessage<List<MedicalRecordDto>> getAll() {
             try {
-                return new ResponseMessageAPI<>(
+                return new CustomResponseMessage<>(
                         service.getAll(),
                         ResultCodeAPI.SUCCESS,
                         null,
                         "Все доступные мед записи успешно получены",
-                        ResultCode.OK.getHttpCode()
+                        ResultCode.OK
                 );
             } catch (NotFoundException exception) {
-                return new ResponseMessageAPI<>(
+                return new CustomResponseMessage<>(
                         null,
                         ResultCodeAPI.FAIL,
                         exception.getClass().getSimpleName(),
                         exception.getMessage(),
-                        ResultCode.NOT_FOUND.getHttpCode()
+                        ResultCode.NOT_FOUND
                 );
             } catch (Exception e) {
-                return new ResponseMessageAPI<>(
+                return new CustomResponseMessage<>(
                         null,
                         ResultCodeAPI.EXCEPTION,
                         e.getClass().getSimpleName(),
                         "Ошибка сервера",
-                        ResultCode.FAIL.getHttpCode()
+                        ResultCode.FAIL
                 );
             }
     }
@@ -138,13 +138,13 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут выполняет поиск мед записи по id и обновляет")
     @PutMapping("/update/{id}")
-    public ResponseMessageAPI<MedicalRecordDto> update(@PathVariable Long id, @RequestBody MedicalRecordDto recordDto) {
-        return new ResponseMessageAPI<>(
+    public CustomResponseMessage<MedicalRecordDto> update(@PathVariable Long id, @RequestBody MedicalRecordDto recordDto) {
+        return new CustomResponseMessage<>(
                 service.update(id, recordDto),
                 ResultCodeAPI.SUCCESS,
                 null,
                 "success",
-                ResultCode.OK.getHttpCode()
+                ResultCode.OK
         );
     }
 
@@ -163,13 +163,13 @@ public class MedicalRecordController {
     })
     @Operation(summary = "Этот роут удаляет мед запись по id")
     @PutMapping("/delete/{id}")
-    public ResponseMessageAPI<String> delete(@PathVariable Long id) {
-            return new ResponseMessageAPI<>(
+    public CustomResponseMessage<String> delete(@PathVariable Long id) {
+            return new CustomResponseMessage<>(
                     service.delete(id),
                     ResultCodeAPI.SUCCESS,
                     null,
                     "success",
-                    ResultCode.OK.getHttpCode()
+                    ResultCode.OK
             );
     }
 
