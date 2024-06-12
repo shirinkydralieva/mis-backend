@@ -35,9 +35,6 @@ public class DoctorServiceImpl implements DoctorService {
         if (departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getDepartmentId()) == null) {
             throw new NotFoundException("Отделение с id " + dto.getDepartmentId() + " не найдено");
         }
-        if (userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId()) == null) {
-            throw new NotFoundException("Пользователь с id " + dto.getUserId() + " не найден");
-        }
         doctor.setDepartment(departmentRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getDepartmentId()));
         doctor.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(dto.getUserId()));
         doctor = doctorRepo.save(doctor);

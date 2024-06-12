@@ -29,6 +29,7 @@ public class PatientMapperImpl implements PatientMapper {
                 .taxId(patient.getTaxId())
                 .address(addressMapper.toDto(patient.getAddress()))
                 .placeOfWork(patient.getPlaceOfWork())
+                .phoneNumber(patient.getPhoneNumber())
                 .build();
         if (patient.getUser() != null) {
             dto.setUserId(patient.getUser().getId());
@@ -49,6 +50,7 @@ public class PatientMapperImpl implements PatientMapper {
                 .sex(patientDto.getSex())
                 .taxId(patientDto.getTaxId())
                 .placeOfWork(patientDto.getPlaceOfWork())
+                .phoneNumber(patientDto.getPhoneNumber())
                 .build();
         if (patientDto.getAddress() != null) {
             patient.setAddress(addressMapper.toEntity(patientDto.getAddress()));

@@ -13,6 +13,7 @@ public class DepartmentDto {
     private String name;
     private String description;
     private List<DoctorDto> doctors;
+    private List<ServiceTypeDto> services;
 
     public DepartmentDto(Long id, String name, String description) {
         this.id = id;

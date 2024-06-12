@@ -1,6 +1,8 @@
 package itacademy.misbackend.mapper.impl;
 
 import itacademy.misbackend.dto.DepartmentDto;
+import itacademy.misbackend.dto.ServiceTypeDto;
+import itacademy.misbackend.entity.ServiceType;
 import itacademy.misbackend.entity.helper.Department;
 import itacademy.misbackend.mapper.DepartmentMapper;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,19 @@ public class DepartmentMapperImpl implements DepartmentMapper {
         if (department.getDoctors() != null) {
             dto.setDoctors(new DoctorMapperImpl().toDtoList(department.getDoctors()));
         }
+        if (department.getServices() != null) {
+            var serviceDtos = new ArrayList<ServiceTypeDto>();
+            for (ServiceType serviceType : department.getServices()) {
+                ServiceTypeDto serviceDto = ServiceTypeDto.builder()
+                        .id(serviceType.getId())
+                        .name(serviceType.getName())
+                        .description(serviceType.getDescription())
+                        .price(serviceType.getPrice())
+                        .build();
+                serviceDtos.add(serviceDto);
+            } dto.setServices(serviceDtos);
+        }
+
         return dto;
     }
 

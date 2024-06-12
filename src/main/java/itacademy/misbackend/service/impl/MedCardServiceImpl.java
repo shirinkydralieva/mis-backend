@@ -2,7 +2,7 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.MedCardDto;
 import itacademy.misbackend.entity.MedCard;
-import itacademy.misbackend.entity.MedicalRecord;
+import itacademy.misbackend.exception.NotFoundException;
 import itacademy.misbackend.mapper.MedicalRecordMapper;
 import itacademy.misbackend.repo.MedCardRepo;
 import itacademy.misbackend.service.MedCardService;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class MedCardServiceImpl implements MedCardService {
         MedCard medCard = repo.findByDeletedAtIsNullAndId(id);
         if (medCard == null) {
             log.error("Мед карта с id " + id + " не найдена!");
-            throw new NullPointerException("Мед карта не найдена!");
+            throw new NotFoundException("Мед карта не найдена!");
         }
          MedCardDto medCardDto = MedCardDto.builder()
                  .id(medCard.getId())
@@ -46,7 +45,7 @@ public class MedCardServiceImpl implements MedCardService {
         List<MedCard> medCardList = repo.findAllByDeletedAtIsNull();
         if (medCardList.isEmpty()) {
             log.error("Мед карт нет!");
-            throw new NullPointerException("Мед карт нет!");
+            throw new NotFoundException("Мед карт нет!");
         }
         List<MedCardDto> medCardDtoList = new ArrayList<>();
         for (MedCard medCard : medCardList) {
@@ -62,52 +61,5 @@ public class MedCardServiceImpl implements MedCardService {
         log.info("КОНЕЦ: MedCardServiceImpl - getAll()");
         return medCardDtoList;
     }
-
-    @Override
-    public MedCardDto update(Long id, MedCardDto dto) {
-        log.info("СТАРТ: MedCardServiceImpl - update(). Мед карта с id {}", id);
-
-        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();*/
-
-        MedCard medCard = repo.findByDeletedAtIsNullAndId(id);
-        if (medCard == null) {
-            log.error("Мед карта с id " + id + " не найдена!");
-            throw new NullPointerException("Мед карта не найдена!");
-        }
-        log.info("Мед карта найдена. Исходные данные - {}", medCard);
-
-        // что и как обновлять??
-
-        medCard.setLastUpdatedAt(LocalDateTime.now());
-        // medCard.setLastUpdatedBy(username);
-
-        repo.save(medCard);
-
-        dto.setLastUpdatedAt(medCard.getLastUpdatedAt());
-        dto.setLastUpdatedBy(medCard.getLastUpdatedBy());
-        log.info("КОНЕЦ: MedicalRecordServiceImpl - update(). Обновленная мед карта - {}", medCard);
-        return dto;
-    }
-
-    @Override
-    public String delete(Long id) {
-        log.info("СТАРТ: MedCardServiceImpl - delete(). Мед карта с id {}", id);
-        //   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //   String username = authentication.getName();
-
-        MedCard medCard = repo.findByDeletedAtIsNullAndId(id);
-        if (medCard == null) {
-            log.error("Мед карта с id " + id + " не найдена!");
-            throw new NullPointerException("Мед карта не найдена!");
-        }
-        medCard.setDeletedAt(LocalDateTime.now());
-        //  record.setDeletedBy(username);
-
-        repo.save(medCard);
-        log.info("КОНЕЦ: MedCardServiceImpl - delete(). Мед карта (id {}) удалена", id);
-        return "Мед карта удалена";
-    }
-
 
 }

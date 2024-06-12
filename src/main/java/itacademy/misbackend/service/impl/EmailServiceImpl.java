@@ -17,6 +17,7 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendRegistrationMessage(RegistrationMessage message) throws MailException {
         SimpleMailMessage emailMessage = new SimpleMailMessage();
+        emailMessage.setFrom("t86501540@gmail.com"); // явно указать
         emailMessage.setTo(message.getEmail());
         emailMessage.setSubject("Подтверждение профиля");
         emailMessage.setText("Для подтверждения профиля пройдите по ссылке ниже:\n"

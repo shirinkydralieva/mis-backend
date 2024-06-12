@@ -2,7 +2,6 @@ package itacademy.misbackend.service.impl;
 
 import itacademy.misbackend.dto.PatientDto;
 import itacademy.misbackend.entity.MedCard;
-import itacademy.misbackend.entity.MedicalRecord;
 import itacademy.misbackend.entity.helper.Address;
 import itacademy.misbackend.entity.helper.Passport;
 import itacademy.misbackend.entity.Patient;
@@ -43,9 +42,6 @@ public class PatientServiceImpl implements PatientService {
         }
         if (patientDto.getPassport() != null) {
             passportRepo.save(patient.getPassport());
-        }
-        if (userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()) == null) {
-            throw new NotFoundException("Пользователь с id " + patientDto.getUserId() + " не найден");
         }
         patient.setUser(userRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(patientDto.getUserId()));
         patient = patientRepo.save(patient);
@@ -120,17 +116,22 @@ public class PatientServiceImpl implements PatientService {
     public String delete(Long id) {
         log.info("СТАРТ: PatientServiceImpl - delete(). Пациент с id {}", id);
         Patient patient = patientRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(id);
-
+        MedCard medCard = medCardRepo.findByDeletedAtIsNullAndId(id);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (patient != null) {
+        if (patient == null) {
+            log.error("Пациент с id " + id + " не найден!");
+            throw new NotFoundException("Пациент с id " + id + " не найден");
+        }
             patient.setDeletedAt(LocalDateTime.now());
             patient.setDeletedBy(authentication.getName());
             patientRepo.save(patient);
+
+            medCard.setDeletedAt(LocalDateTime.now());
+            medCard.setDeletedBy(authentication.getName());
+            medCardRepo.save(medCard);
+
             log.info("КОНЕЦ: PatientServiceImpl - delete(). Пациент (id {}) удален", id);
             return "Пациент с id " + id + " удален";
-        }
-        log.error("Пациент с id " + id + " не найден!");
-        return "Пациент с id " + id + " не найден";
     }
 }

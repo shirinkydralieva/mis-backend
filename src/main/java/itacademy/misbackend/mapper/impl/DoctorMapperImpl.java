@@ -21,6 +21,7 @@ public class DoctorMapperImpl implements DoctorMapper {
                 .lastName(doctor.getLastName())
                 .patronymic(doctor.getPatronymic())
                 .specialization(doctor.getSpecialization())
+                .phoneNumber(doctor.getPhoneNumber())
                 .build();
         if (doctor.getAppointments() != null) {
             dto.setAppointments(new AppointmentMapperImpl().toDtoList(doctor.getAppointments()));
@@ -41,6 +42,7 @@ public class DoctorMapperImpl implements DoctorMapper {
                 .lastName(doctorDto.getLastName())
                 .patronymic(doctorDto.getPatronymic())
                 .specialization(doctorDto.getSpecialization())
+                .phoneNumber(doctorDto.getPhoneNumber())
                 .build();
     }
 

@@ -46,6 +46,9 @@ public class Patient {
 
     private String placeOfWork;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @OneToOne
     private User user;
 
