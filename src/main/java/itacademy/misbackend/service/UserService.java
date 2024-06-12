@@ -15,7 +15,7 @@ public interface UserService {
     List<UserDto> getAll();
     void addRole(Long id, String role);
     UserDto update(Long id, UpdatedUser updatedUser);
-    //void block(Long userId);
-    //void unblock(Long userId);
     String delete(Long id);
+
+    Long getUserIdByEmail(String email);
 }

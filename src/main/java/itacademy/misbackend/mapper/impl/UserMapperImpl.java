@@ -16,7 +16,9 @@ public class UserMapperImpl implements UserMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
+                .verificationToken(user.getVerificationToken())
                 .enabled(user.isEnabled())
                 .build();
         if (user.getRoles() != null) {
@@ -31,6 +33,8 @@ public class UserMapperImpl implements UserMapper {
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
+                .isEnabled(userDto.isEnabled())
+                .verificationToken(userDto.getVerificationToken())
                 .phoneNumber(userDto.getPhoneNumber())
                 .build();
         return user;

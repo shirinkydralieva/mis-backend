@@ -13,6 +13,7 @@ import itacademy.misbackend.service.PatientService;
 import itacademy.misbackend.service.RoleService;
 import itacademy.misbackend.service.UserService;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.LockedException;
@@ -33,6 +34,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Getter
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final UserMapper userMapper;
@@ -53,13 +55,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
     @Override
-    public UserDto save(UserDto userDto) {
-        log.info("СТАРТ: UserServiceImpl - create() {}", userDto);
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        User user = userMapper.toEntity(userDto);
-        String token = UUID.randomUUID().toString();
+    public UserDto save(UserDto saveUserDto) {
+        log.info("СТАРТ: UserServiceImpl - create() {}", saveUserDto);
+        saveUserDto.setPassword(passwordEncoder.encode(saveUserDto.getPassword()));
+        saveUserDto.setVerificationToken(UUID.randomUUID().toString());
+        User user = userMapper.toEntity(saveUserDto);
         var roles = new HashSet<Role>();
-
         user.setRoles(roles);
         user = userRepo.save(user);
         log.info("КОНЕЦ: UserServiceImpl - create {} ", userMapper.toDto(user));
@@ -75,7 +76,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         doctor.setUserId(user.getId());
         doctor = doctorService.save(doctor);
         userDoctorRequest.getUser().setId(user.getId());
-        userDoctorRequest.getUser().setPassword(null);
         userDoctorRequest.getDoctor().setId(doctor.getId());
         return userDoctorRequest;
     }
@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         patient.setUserId(user.getId());
         patient = patientService.create(patient);
         userPatientRequest.getUser().setId(user.getId());
-        userPatientRequest.getUser().setPassword(null);
         userPatientRequest.getPatient().setId(patient.getId());
         return userPatientRequest;
     }
@@ -158,5 +157,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return "Пользователь с id " + id + " успешно удален";
         }
         return "Пользователь с id " + id + " не найден";
+    }
+
+    @Override
+    public Long getUserIdByEmail(String email) {
+        if (userRepo.existsByEmail(email)) {
+            return userRepo.findByEmail(email).getId();
+        } else {
+            throw new NotFoundException("Пользователь с email " + email + " не найден");
+        }
     }
 }

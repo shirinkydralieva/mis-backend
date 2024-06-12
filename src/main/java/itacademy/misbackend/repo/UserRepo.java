@@ -8,11 +8,9 @@ import java.util.List;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
-    /*User findByUsername(String username);
     User findByEmail(String email);
     User findByUsernameOrEmail(String username, String email);
-    Boolean existsByUsername(String username);
-    Boolean existsByEmail(String email);*/
+    Boolean existsByEmail(String email);
     User findByDeletedAtIsNullAndDeletedByIsNullAndUsername(String username);
     List<User> findAllByDeletedAtIsNullAndDeletedByIsNull();
     User findByDeletedAtIsNullAndDeletedByIsNullAndId(Long id);

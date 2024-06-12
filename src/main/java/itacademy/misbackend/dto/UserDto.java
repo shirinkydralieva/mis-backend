@@ -40,5 +40,7 @@ public class UserDto {
 
     private boolean enabled;
 
+    private String verificationToken;
+
     private Set<Role> roles;
 }
