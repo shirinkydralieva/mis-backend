@@ -18,6 +18,36 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @PutMapping("/addRole")
+    public CustomResponseMessage<Void> addRoleToUser(@RequestParam Long userId, @RequestParam String roleName) {
+       try {
+           userService.addRole(userId, roleName);
+           return new CustomResponseMessage<>(
+                   null,
+                   ResultCodeAPI.SUCCESS,
+                   "Роль успешно добавлена ",
+                   null,
+                   ResultCode.OK
+           );
+       } catch (NotFoundException e) {
+           return new CustomResponseMessage<>(
+                   null,
+                   ResultCodeAPI.FAIL,
+                   "Ошибка",
+                   e.getMessage(),
+                   ResultCode.NOT_FOUND
+           );
+       } catch (Exception e) {
+           return new CustomResponseMessage<>(
+                   null,
+                   ResultCodeAPI.EXCEPTION,
+                   "Ошибка на стороне сервера",
+                   e.getMessage(),
+                   ResultCode.INTERNAL_SERVER_ERROR
+           );
+       }
+    }
+
     @GetMapping("/{id}")
     public CustomResponseMessage<UserDto> getById(@PathVariable Long id){
         try {
