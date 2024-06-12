@@ -18,6 +18,7 @@ public class AppointmentMapperImpl implements AppointmentMapper {
                 .status(appointment.getStatus())
                 .doctorId(appointment.getDoctor().getId())
                 .patientId(appointment.getPatient().getId())
+                .medicalRecordId(appointment.getMedicalRecord().getId())
                 .appointmentDate(appointment.getAppointmentDate())
                 .build();
     }
