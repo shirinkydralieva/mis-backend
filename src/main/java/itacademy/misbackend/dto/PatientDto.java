@@ -49,6 +49,12 @@ public class PatientDto {
 
     private String placeOfWork;
 
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$",
+            message = "Номер телефона должен содержать от 7 до 25 символов " +
+                    "и может содержать только цифры, пробелы, скобки, дефисы и плюсы")
+    @NotNull(message = "Поле «Номер телефона» не может быть пустым")
+    private String phoneNumber;
+
     private Long userId;
 
     private List<AppointmentDto> appointments;

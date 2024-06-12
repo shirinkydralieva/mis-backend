@@ -26,6 +26,10 @@ public class Doctor {
     private String lastName;
     private String patronymic;
     private String specialization;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;

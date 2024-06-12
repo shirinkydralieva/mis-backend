@@ -109,46 +109,4 @@ public class MedCardController {
             );
         }
     }
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Мед карта успешно удалена.",
-                    content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Мед карта по этой id не найдена."),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Не удалось выполнить поиск.")
-    })
-    @Operation(summary = "Этот роут для удаления мед карт по id.")
-    @PutMapping("/delete")
-    public CustomResponseMessage<String> delete(@RequestParam Long id) {
-        try {
-            return new CustomResponseMessage<>(
-                    service.delete(id),
-                    ResultCodeAPI.SUCCESS,
-                    null,
-                    "Мед карта успешно удалена.",
-                    ResultCode.OK
-            );
-        } catch (NotFoundException e) {
-            return new CustomResponseMessage<>(
-                    null,
-                    ResultCodeAPI.FAIL,
-                    "Ошибка",
-                    e.getMessage(),
-                    ResultCode.NOT_FOUND
-            );
-        } catch (Exception e) {
-            return new CustomResponseMessage<>(
-                    null,
-                    ResultCodeAPI.EXCEPTION,
-                    "Ошибка",
-                    e.getMessage(),
-                    ResultCode.FAIL
-            );
-        }
-    }
-
 }

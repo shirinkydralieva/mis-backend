@@ -17,7 +17,6 @@ public class UserMapperImpl implements UserMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
                 .verificationToken(user.getVerificationToken())
                 .enabled(user.isEnabled())
                 .build();
@@ -35,7 +34,6 @@ public class UserMapperImpl implements UserMapper {
                 .email(userDto.getEmail())
                 .isEnabled(userDto.isEnabled())
                 .verificationToken(userDto.getVerificationToken())
-                .phoneNumber(userDto.getPhoneNumber())
                 .build();
         return user;
     }

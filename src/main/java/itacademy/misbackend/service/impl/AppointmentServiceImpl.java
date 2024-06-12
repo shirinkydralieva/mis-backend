@@ -7,6 +7,7 @@ import itacademy.misbackend.repo.AppointmentRepo;
 import itacademy.misbackend.repo.DoctorRepo;
 import itacademy.misbackend.repo.PatientRepo;
 import itacademy.misbackend.service.AppointmentService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final DoctorRepo doctorRepo;
     private final PatientRepo patientRepo;
 
+    @Transactional
     @Override
     public AppointmentDto create(AppointmentDto appointmentDto) {
         log.info("СТАРТ: AppointmentServiceImpl - create() {}", appointmentDto);
@@ -36,7 +38,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setPatient(patientRepo.findByDeletedAtIsNullAndDeletedByIsNullAndId(appointmentDto.getPatientId()));
         }
         appointment = appointmentRepo.save(appointment);
-        log.info("КОНЕЦ: AppointmentServiceImpl - create() {}", appointmentDto);
+        log.info("КОНЕЦ: AppointmentServiceImpl - create() {}", appointmentMapper.toDto(appointment));
         return appointmentMapper.toDto(appointment);
     }
 

@@ -32,11 +32,6 @@ public class UserDto {
     @NotNull(message = "Поле «Электронная почта» не может быть пустым")
     private String email;
 
-    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$",
-            message = "Номер телефона должен содержать от 7 до 25 символов " +
-                      "и может содержать только цифры, пробелы, скобки, дефисы и плюсы")
-    @NotNull(message = "Поле «Номер телефона» не может быть пустым")
-    private String phoneNumber;
 
     private boolean enabled;
 

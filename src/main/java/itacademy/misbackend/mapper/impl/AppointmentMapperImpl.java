@@ -12,15 +12,18 @@ import java.util.List;
 public class AppointmentMapperImpl implements AppointmentMapper {
     @Override
     public AppointmentDto toDto(Appointment appointment) {
-        return AppointmentDto.builder()
+        AppointmentDto dto = AppointmentDto.builder()
                 .id(appointment.getId())
                 .reason(appointment.getReason())
                 .status(appointment.getStatus())
                 .doctorId(appointment.getDoctor().getId())
                 .patientId(appointment.getPatient().getId())
-                .medicalRecordId(appointment.getMedicalRecord().getId())
                 .appointmentDate(appointment.getAppointmentDate())
                 .build();
+        if (appointment.getMedicalRecord() != null) {
+            dto.setMedicalRecordId(appointment.getMedicalRecord().getId());
+        }
+        return dto;
     }
 
     @Override
