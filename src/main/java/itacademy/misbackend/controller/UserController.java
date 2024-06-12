@@ -1,5 +1,6 @@
 package itacademy.misbackend.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import itacademy.misbackend.dto.*;
 import itacademy.misbackend.enums.ResultCode;
 import itacademy.misbackend.enums.ResultCodeAPI;
@@ -10,75 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Users", description = "Тут находятся все роуты связанные с пациентами")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
-    @PostMapping()
-    public CustomResponseMessage<UserDto> save(@Valid @RequestBody UserDto userDto){
-        try{
-            return new CustomResponseMessage<>(
-                    userService.save(userDto),
-                    ResultCodeAPI.SUCCESS,
-                    "Пользователь успешно создан",
-                    null,
-                    ResultCode.CREATED
-            );
-        } catch (Exception e){
-            return new CustomResponseMessage<>(
-                    null,
-                    ResultCodeAPI.EXCEPTION,
-                    "Ошибка",
-                    e.getMessage(),
-                    ResultCode.INTERNAL_SERVER_ERROR
-            );
-        }
-    }
-
-    @PostMapping("/new-doctor")
-    public CustomResponseMessage<UserDoctorRequest> createDoctorUser(@Valid @RequestBody UserDoctorRequest userDoctor){
-        try{
-            return new CustomResponseMessage<>(
-                    userService.createDoctor(userDoctor),
-                    ResultCodeAPI.SUCCESS,
-                    "Пользователь(Доктор) успешно создан",
-                    null,
-                    ResultCode.CREATED
-            );
-        } catch (Exception e){
-            return new CustomResponseMessage<>(
-                    null,
-                    ResultCodeAPI.EXCEPTION,
-                    "Ошибка",
-                    e.getMessage(),
-                    ResultCode.INTERNAL_SERVER_ERROR
-            );
-        }
-    }
-
-    @PostMapping("/new-patient")
-    public CustomResponseMessage<UserPatientRequest> createPatientUser(@Valid @RequestBody UserPatientRequest userPatient){
-        try{
-            return new CustomResponseMessage<>(
-                    userService.createPatient(userPatient),
-                    ResultCodeAPI.SUCCESS,
-                    "Пользователь(Пациент) успешно создан",
-                    null,
-                    ResultCode.CREATED
-            );
-        } catch (Exception e){
-            return new CustomResponseMessage<>(
-                    null,
-                    ResultCodeAPI.EXCEPTION,
-                    "Ошибка",
-                    e.getMessage(),
-                    ResultCode.INTERNAL_SERVER_ERROR
-            );
-        }
-    }
     @GetMapping("/{id}")
     public CustomResponseMessage<UserDto> getById(@PathVariable Long id){
         try {

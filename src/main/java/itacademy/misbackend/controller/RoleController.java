@@ -34,7 +34,7 @@ public class RoleController {
                     responseCode = "400",
                     description = "Не удалось сохранить роль")
     })
-    @Operation(summary = "Этот роут для создание ролей")
+    @Operation(summary = "Этот роут для создания ролей")
     @PostMapping()
     public CustomResponseMessage<Long> save(@Valid @RequestBody Role role) {
         try{
