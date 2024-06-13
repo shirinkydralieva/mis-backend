@@ -5,6 +5,7 @@ import itacademy.misbackend.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,6 +42,22 @@ public class SecurityConfig {
         http.authorizeHttpRequests().requestMatchers(
                         "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html",
                         "/swagger-resources/**", "/webjars/**").permitAll();
+
+
+        http.authorizeHttpRequests().requestMatchers(HttpMethod.GET,
+                "/api/departments/**", "/api/doctors/**", "api/services/**").permitAll();
+
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/patients/**",
+                        "/api/medCards/**", "/api/appointments/**", "/api/medicalRecords/**").hasRole("DOCTOR")
+                .requestMatchers(HttpMethod.POST, "/api/medicalRecords/**").hasRole("DOCTOR")
+                .requestMatchers(HttpMethod.PUT, "/api/medicalRecords/**").hasRole("DOCTOR");
+
+        // закомментила, т.к. пока нет юзера с ролью ADMIN
+      /*  http.authorizeHttpRequests().requestMatchers("/api/patients/**", "/api/doctors/**", "/api/departments/**",
+                        "/api/services/**", "/api/appointments/**", "/api/medicalRecords/**").hasRole("ADMIN");
+*/
+
         http.authorizeHttpRequests().anyRequest().permitAll();//Временно
         http.apply(CustomSecurityDetails.customDsl(userRepo));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

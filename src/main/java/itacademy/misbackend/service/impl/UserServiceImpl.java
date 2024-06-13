@@ -125,7 +125,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else if (role == null) {
             throw new NotFoundException("Роль " + roleName + " не найдена");
         }
-        user.setRoles(new HashSet<>(List.of(role)));
+        Set<Role> roles = user.getRoles();
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
+        roles.add(role);
+        user.setRoles(roles);
         userRepo.save(user);
     }
 
